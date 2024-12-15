@@ -6,10 +6,10 @@ class Conexion
     // Método estático para conectar
     public static function conectarBD()
     {
-        $server = "localhost";
-        $user = "root";
-        $pass = "";
-        $db = "bdtacsa";
+        $server = "db";
+        $user = "dev";
+        $pass = "123";
+        $db = "adsrocas";
 
         self::$conexion = new mysqli($server, $user, $pass, $db);
 

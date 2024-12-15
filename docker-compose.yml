@@ -13,9 +13,9 @@ services:
       - .env
 
   db:
-    image: mysql:5.7
+    image: mysql:8.0.40
     environment:
-      MYSQL_DATABASE: mboutique
+      MYSQL_DATABASE: adsrocas
       MYSQL_USER: dev
       MYSQL_PASSWORD: 123
       MYSQL_ROOT_PASSWORD: 123
@@ -23,13 +23,14 @@ services:
       - "3036:3306"
     volumes:
       - ./db:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   phpmyadmin:
     image: phpmyadmin
     ports:
       - 8081:80
     environment:
-      - PMA_HOST=db
+      PMA_HOST: db
     volumes:
       - ./phpmyadmin_logs:/var/log/apache2
 

@@ -40,7 +40,7 @@ class Usuario
     // Validar si el usuario está activo
     public function validarEstado($login)
     {
-        $sql = "SELECT EstadoUsuario FROM usuario WHERE NombreUsuario = '$login' AND EstadoUsuario = 'activo'";
+        $sql = "SELECT EstadoUsuario FROM usuario WHERE NombreUsuario = '$login' AND EstadoUsuario = '1'";
         $conexion = Conexion::conectarBD();
         $respuesta = $conexion->query($sql);
 
@@ -57,18 +57,18 @@ class Usuario
 
     public function verificarRol($login)
     {
-        $sql = "SELECT id_rol FROM usuario WHERE NombreUsuario = '$login'";
+        $sql = "SELECT RolID FROM usuario WHERE NombreUsuario = '$login'";
         $conexion = Conexion::conectarBD();
         $respuesta = $conexion->query($sql);
-    
+
         if (!$respuesta) {
             die("Error en la consulta: " . $conexion->error);
         }
-    
+
         if ($fila = $respuesta->fetch_assoc()) {
-            $rol = $fila['id_rol'];
-    
-            // Convertir id_rol en un nombre de rol
+            $rol = $fila['RolID'];
+
+            // Convertir RolID en un nombre de rol
             switch ($rol) {
                 case 1:
                     $rolNombre = "jefeVentas";
@@ -82,13 +82,12 @@ class Usuario
                 default:
                     $rolNombre = "desconocido";
             }
-    
+
             Conexion::desConectarBD();
             return $rolNombre;
         }
-    
+
         Conexion::desConectarBD();
         return null; // No se encontró el rol
     }
-        
 }
