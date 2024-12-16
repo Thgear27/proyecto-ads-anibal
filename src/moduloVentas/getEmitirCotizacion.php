@@ -1,4 +1,7 @@
 <?php
+include_once($_SERVER['DOCUMENT_ROOT'] . '/modelo/cotizaciones.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/moduloVentas/controlEmitirCotizacion.php');
+
 session_start();
 
 $mensajeError = '';
@@ -16,15 +19,32 @@ function validarBoton($btnbuscar)
   return isset($btnbuscar);
 }
 
-echo "<pre>";
-echo "Contenido de \$_POST:\n";
-print_r($_POST);
-echo "\n\nContenido de \$_FILES:\n";
-print_r($_FILES);
-echo "</pre>";
+// Validar datos recibidos
+$nrRucDni = isset($_POST['txtNrRucDni']) ? trim($_POST['txtNrRucDni']) : '';
+$razonSocial = isset($_POST['txtRazonSocial']) ? trim($_POST['txtRazonSocial']) : '';
+$direccion = isset($_POST['txtDireccion']) ? trim($_POST['txtDireccion']) : '';
+$obra = isset($_POST['txtObra']) ? trim($_POST['txtObra']) : '';
+$moneda = isset($_POST['txtMoneda']) ? trim($_POST['txtMoneda']) : '';
+$productosArrayJson = isset($_POST['productsArray']) ? $_POST['productsArray'] : '';
+
+// Validación simple (puedes hacerla más completa)
+if ($nrRucDni === '' || $razonSocial === '' || $direccion === '' || $obra === '' || $moneda === '' || $productosArrayJson === '') {
+  $mensajeError = 'Todos los campos son requeridos.';
+  echo $mensajeError;
+  exit();
+}
+
 
 if (validarBoton($_POST['btnSiguiente'])) {
-  echo "Siguiente";
-} else {
-  echo "Hay un problema dio mio, aaah";
+  $control = new controlEmitirCotizacion();
+  $resultado = $control->guardarNuevaCotizacion(
+    $nrRucDni,
+    $razonSocial,
+    $direccion,
+    $obra,
+    $moneda,
+    $productosArrayJson
+  );
+
+  header('Location: /moduloVentas/indexCotizacion.php?');
 }
