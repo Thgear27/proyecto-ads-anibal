@@ -32,9 +32,10 @@ function redirigirCotizacion()
   header('Location: /moduloVentas/indexCotizacion.php');
 }
 
-$btnBuscarFechas = $_POST['btnBuscarFechas'];
-$btnBuscarNrcotaizacion = $_POST['btnBuscarNrcotaizacion'];
-$btnGenerarPdf = $_POST['btnGenerarPdf'];
+$btnBuscarFechas = isset($_POST['btnBuscarFechas']) ? $_POST['btnBuscarFechas'] : null;
+$btnBuscarNrcotaizacion = isset($_POST['btnBuscarNrcotaizacion']) ? $_POST['btnBuscarNrcotaizacion'] : null;
+$btnGenerarPdf = isset($_POST['btnGenerarPdf']) ? $_POST['btnGenerarPdf'] : null;
+
 
 if (validarBoton($btnBuscarFechas)) {
   redirigirCotizacionFechas();
