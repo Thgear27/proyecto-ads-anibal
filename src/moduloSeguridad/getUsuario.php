@@ -17,7 +17,7 @@ if(validarBoton($_POST['btnAceptar']))
     {
         $login= strtolower(trim($_POST['txtLogin']));
         $password = $_POST['txtPassword'];
-        include_once('controlAutenticarusuario.php');
+        include_once('controlAutenticarUsuario.php');
         $obcontrol = new controlAutenticarUsuario();
         $obcontrol -> verificarUsuario($login,$password);
     }
