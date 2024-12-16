@@ -1,22 +1,22 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/shared/pantalla.php');
 
-class panelCotizacion extends pantalla
+class panelEmitirCotizacion extends pantalla
 {
-  public function panelCotizacionShow($cotizaciones = null)
+  public function panelEmitirCotizacionShow($productos = null)
   {
     if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] != "SI") {
       header("Location: /");
       exit();
     }
 
-    $this->cabeceraShow("Cotazación");
+    $this->cabeceraShow("Cotazación", "/assets/emitirCotizacion.js");
 
     $rol = $_SESSION['rol'];
     $login = $_SESSION['login'];
 ?>
     <!-- Contenedor principal -->
-    <div style="display: flex; height: 100vh;">
+    <div style="display: flex;">
       <!-- Menú lateral -->
       <aside style="width: 200px; background-color: #00695c; color: white; padding: 10px;">
         <h3 style="text-align: center; border-bottom: 2px solid white; padding-bottom: 10px;">Menú</h3>
@@ -77,77 +77,82 @@ class panelCotizacion extends pantalla
       </aside>
 
       <!-- Contenido principal -->
-      <main style="padding: 0 2rem;">
-        <h1 style="color: #00695c;">Cotizaciones</h1>
-        <div class="filters-container">
-          <a href="/moduloVentas/indexEmitirCotizacion.php" class="btn" style="margin-bottom: 1rem;">Emitir Cotización</a>
-          <div class="flex">
-            <h2>Filtros de Búsqueda</h2>
+      <main style="padding: 4rem 2rem;">
+        <h1>Emisión de Cotización</h1>
+        <h2>Información del comprador:</h2>
+        <form action="/moduloVentas/getEmitirCotizacion.php" method="POST" class="emitir-cotizacion" id="emitir-cotizacion-form">
+          <div class="input-container">
+            <label>Nro de RUC / DNI:</label>
+            <input type="text" id="nrRucDni" name="txtNrRucDni" required>
           </div>
-          <div class="filters">
-            <!-- Primer filtro de nro de cotización, un input text -->
-            <form action="/moduloVentas/getCotizacion.php" method="POST">
-              <div class="input-container">
-                <label for="nroCotizacion">Nro. Cotización:</label>
-                <input type="text" id="nroCotizacion" name="txtNroCotizacion">
-              </div>
-              <input style="margin-top: 10px;" type="submit" name="btnBuscarNrcotaizacion" value="Buscar">
-            </form>
 
-            <!-- Segundo filtro de Fecha, dos inputs de "desde" "hasta" -->
-            <form action="/moduloVentas/getCotizacion.php" method="POST">
-              <div class="input-container">
-                <label for="fechaDesde">Fecha desde:</label>
-                <input type="date" id="fechaDesde" name="txtFechaDesde">
-                <input type="date" id="fechaHasta" name="txtFechaHasta">
-              </div>
-              <input style="margin-top: 10px;" type="submit" name="btnBuscarFechas" value="Buscar">
-            </form>
+          <div class="input-container">
+            <label>Razón Social:</label>
+            <input type="text" id="razonSocial" name="txtRazonSocial" required>
           </div>
-        </div>
 
+          <div class="input-container">
+            <label>Dirección: </label>
+            <input type="text" id="direccion" name="txtDireccion" required>
+          </div>
+
+          <div class="input-container">
+            <label>Obra: </label>
+            <input type="text" id="obra" name="txtObra" required>
+          </div>
+
+          <div class="input-container">
+            <span>Moneda:</span>
+            <label>
+              <input type="radio" name="txtMoneda" value="PEN" checked>
+              Soles (PEN)
+            </label>
+            <label>
+              <input type="radio" name="txtMoneda" value="USD">
+              Dólares (USD)
+            </label>
+          </div>
+          <input type="hidden" name="productsArray" id="productsArrayInput">
+          <input type="hidden" name="btnSiguiente" value="Siguiente">
+        </form>
+        <h2>Información de los productos:</h2>
         <div class="table-cotizaciones">
           <table id="cotaizaciones-table">
             <thead>
               <tr>
-                <th>Serie</th>
                 <th>Nro</th>
-                <th>Cliente</th>
-                <th>Obra</th>
-                <th>Fecha Emisión</th>
-                <th>Monto</th>
+                <th>Producto</th>
+                <th>Und</th>
+                <th>Venta</th>
+                <th>Compra</th>
                 <th>-</th>
               </tr>
             </thead>
             <tbody>
-              <?php if ($cotizaciones !== null) : ?>
+              <?php if ($productos !== null) : ?>
 
-                <?php foreach ($cotizaciones as $cotaizacion) : ?>
+                <?php foreach ($productos as $producto) : ?>
                   <tr>
-                    <td><?= $cotaizacion['SerieComprobanteID']; ?></td>
-                    <td><?= $cotaizacion['NumeroCorrelativo']; ?></td>
-                    <td><?= $cotaizacion['Cliente']; ?></td>
-                    <td><?= $cotaizacion['Obra']; ?></td>
-                    <td><?= $cotaizacion['FechaEmision']; ?></td>
-                    <td><?= $cotaizacion['ImporteTotal']; ?></td>
+                    <td><?= $producto['ID']; ?></td>
+                    <td><?= $producto['NombreProducto']; ?></td>
+                    <td><?= $producto['Unidad']; ?></td>
+                    <td><?= $producto['PrecioVenta']; ?></td>
+                    <td><?= $producto['PrecioCompra']; ?></td>
                     <td>
-                      <form action="/moduloVentas/getCotizacion.php" method="POST">
-                        <input type="hidden" name="txtIDCotizacion" value="<?= $cotaizacion['CotizacionEmitidaID']; ?>">
-                        <input type="submit" name="btnGenerarPdf" value="Descargar PDF">
-                      </form>
+                      <input type="checkbox" data-product-checkbox data-product-id="<?= $producto['ID']; ?>" data-product-name="<?= $producto['NombreProducto']; ?>" data-product-price="<?= $producto['PrecioVenta']; ?>" class="add-product" />
                     </td>
                   </tr>
                 <?php endforeach; ?>
 
               <?php else : ?>
                 <tr>
-                  <td colspan="7">No se encontraron solicitudes.</td>
+                  <td colspan="6">No se encontraron solicitudes.</td>
                 </tr>
               <?php endif; ?>
             </tbody>
           </table>
         </div>
-
+        <button style="width: 100%; font-size: 1.2rem; margin-top: 1rem;" class="btn" id="btnSiguiente">Siguiente</button>
       </main>
     </div>
 <?php

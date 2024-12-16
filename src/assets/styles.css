@@ -18,7 +18,7 @@ main h1 {
   font-size: 2rem;
 }
 
-.filters-container{
+.filters-container {
   background: #b2dfdb; /* Un tono claro del turquesa */
   border-radius: 8px;
   padding: 1rem;
@@ -47,6 +47,26 @@ main h1 {
   cursor: pointer;
   font-weight: bold;
   transition: background 0.3s;
+}
+
+.btn,
+.btn:link,
+.btn:visited {
+  display: inline-block;
+  background: #00695c;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+  text-decoration: none; /* Para que los enlaces no tengan subrayado */
+}
+
+.btn:hover,
+.btn:focus {
+  background: #004d40;
 }
 
 .filters-container button:hover {
@@ -157,5 +177,73 @@ main h1 {
   .filters-container h2,
   .filters-container button {
     margin-bottom: 0.5rem;
+  }
+}
+
+.emitir-cotizacion {
+  background: #e0f2f1; /* Fondo claro */
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.emitir-cotizacion .input-container {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.emitir-cotizacion label {
+  font-weight: bold;
+  color: #004d40; /* Un tono más oscuro para buen contraste */
+  margin-bottom: 0.5rem;
+}
+
+.emitir-cotizacion input[type="text"],
+.emitir-cotizacion input[type="date"] {
+  padding: 0.5rem;
+  border: 1px solid #80cbc4;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #333;
+  font-size: 1rem;
+}
+
+.emitir-cotizacion input[type="radio"] {
+  margin-right: 0.3rem;
+}
+
+.emitir-cotizacion .input-container span {
+  font-weight: bold;
+  color: #004d40;
+  margin-bottom: 0.5rem;
+}
+
+/* Ajuste para radio buttons */
+.emitir-cotizacion .input-container > label {
+  font-weight: normal;
+  color: #333;
+}
+
+/* Ajustar labels radio cuando van uno al lado del otro */
+.emitir-cotizacion .input-container > label > input {
+  vertical-align: middle;
+}
+
+.table-cotizaciones {
+  border: 1px solid #ddd;
+  max-height: 250px;
+  overflow-x: auto;
+}
+
+
+/* Responsive */
+@media (max-width: 600px) {
+  .emitir-cotizacion {
+    padding: 1rem;
+  }
+  .emitir-cotizacion .input-container {
+    margin-bottom: 1rem;
   }
 }
