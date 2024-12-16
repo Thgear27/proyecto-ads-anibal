@@ -10,7 +10,7 @@ class panelEmitirCotizacion extends pantalla
       exit();
     }
 
-    $this->cabeceraShow("Cotazación");
+    $this->cabeceraShow("Cotazación", "/assets/emitirCotizacion.js");
 
     $rol = $_SESSION['rol'];
     $login = $_SESSION['login'];
@@ -80,7 +80,7 @@ class panelEmitirCotizacion extends pantalla
       <main style="padding: 4rem 2rem;">
         <h1>Emisión de Cotización</h1>
         <h2>Información del comprador:</h2>
-        <form class="emitir-cotizacion">
+        <form action="/moduloVentas/getEmitirCotizacion.php" method="POST" class="emitir-cotizacion" id="emitir-cotizacion-form">
           <div class="input-container">
             <label>Nro de RUC / DNI:</label>
             <input type="text" id="nrRucDni" name="txtNrRucDni" required>
@@ -93,12 +93,12 @@ class panelEmitirCotizacion extends pantalla
 
           <div class="input-container">
             <label>Dirección: </label>
-            <input type="date" id="direccion" name="txtDireccion" required>
+            <input type="text" id="direccion" name="txtDireccion" required>
           </div>
 
           <div class="input-container">
             <label>Obra: </label>
-            <input type="date" id="obra" name="txtObra" required>
+            <input type="text" id="obra" name="txtObra" required>
           </div>
 
           <div class="input-container">
@@ -112,6 +112,8 @@ class panelEmitirCotizacion extends pantalla
               Dólares (USD)
             </label>
           </div>
+          <input type="hidden" name="productsArray" id="productsArrayInput">
+          <input type="hidden" name="btnSiguiente" value="Siguiente">
         </form>
         <h2>Información de los productos:</h2>
         <div class="table-cotizaciones">
@@ -137,7 +139,7 @@ class panelEmitirCotizacion extends pantalla
                     <td><?= $producto['PrecioVenta']; ?></td>
                     <td><?= $producto['PrecioCompra']; ?></td>
                     <td>
-                      <input type="checkbox" data-product-id="<?= $producto['ID']; ?>" data-product-name="<?= $producto['NombreProducto']; ?>" data-product-price="<?= $producto['PrecioVenta']; ?>" class="add-product" />
+                      <input type="checkbox" data-product-checkbox data-product-id="<?= $producto['ID']; ?>" data-product-name="<?= $producto['NombreProducto']; ?>" data-product-price="<?= $producto['PrecioVenta']; ?>" class="add-product" />
                     </td>
                   </tr>
                 <?php endforeach; ?>
@@ -150,7 +152,7 @@ class panelEmitirCotizacion extends pantalla
             </tbody>
           </table>
         </div>
-        <button style="width: 100%; font-size: 1.2rem; margin-top: 1rem;" class="btn">Siguiente</button>
+        <button style="width: 100%; font-size: 1.2rem; margin-top: 1rem;" class="btn" id="btnSiguiente">Siguiente</button>
       </main>
     </div>
 <?php
