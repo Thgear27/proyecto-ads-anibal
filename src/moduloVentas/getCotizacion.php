@@ -1,4 +1,5 @@
 <?php
+include_once($_SERVER['DOCUMENT_ROOT'] . '/moduloVentas/controlEmitirCotizacion.php');
 session_start();
 
 $mensajeError = '';
@@ -33,11 +34,15 @@ function redirigirCotizacion()
 
 $btnBuscarFechas = $_POST['btnBuscarFechas'];
 $btnBuscarNrcotaizacion = $_POST['btnBuscarNrcotaizacion'];
+$btnGenerarPdf = $_POST['btnGenerarPdf'];
 
 if (validarBoton($btnBuscarFechas)) {
   redirigirCotizacionFechas();
 } elseif (validarBoton($btnBuscarNrcotaizacion)) {
   redirigirCotizacionNumeroCotizacion();
+} elseif (validarBoton($btnGenerarPdf)) {
+  $control = new controlEmitirCotizacion();
+  $control->generarCotizacionesPdf($_POST['txtIDCotizacion']);
 } else {
   redirigirCotizacion();
 }

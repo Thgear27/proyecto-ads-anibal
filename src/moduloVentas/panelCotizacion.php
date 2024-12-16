@@ -131,9 +131,10 @@ class panelCotizacion extends pantalla
                     <td><?= $cotaizacion['FechaEmision']; ?></td>
                     <td><?= $cotaizacion['ImporteTotal']; ?></td>
                     <td>
-                      <button>
-                        Descargar PDF
-                      </button>
+                      <form action="/moduloVentas/getCotizacion.php" method="POST">
+                        <input type="hidden" name="txtIDCotizacion" value="<?= $cotaizacion['CotizacionEmitidaID']; ?>">
+                        <input type="submit" name="btnGenerarPdf" value="Descargar PDF">
+                      </form>
                     </td>
                   </tr>
                 <?php endforeach; ?>

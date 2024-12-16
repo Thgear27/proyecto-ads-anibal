@@ -5,7 +5,13 @@ class Cotizaciones
 {
   public function getCotizaciones($numerocotizacion = null, $fechadesde = null, $fechahasta = null)
   {
-    $sql = "SELECT ce.SerieComprobanteID, ce.NumeroCorrelativo, cl.NombreCompletoORazonSocial AS Cliente, ce.Obra, ce.FechaEmision, ce.ImporteTotal 
+    $sql = "SELECT ce.CotizacionEmitidaID,
+              ce.SerieComprobanteID,
+              ce.NumeroCorrelativo,
+              cl.NombreCompletoORazonSocial AS Cliente,
+              ce.Obra,
+              ce.FechaEmision,
+              ce.ImporteTotal
             FROM cotizacionemitida ce
             INNER JOIN cliente cl ON ce.ClienteID = cl.ClienteID";
 
@@ -136,5 +142,115 @@ class Cotizaciones
 
     Conexion::desConectarBD();
     return $numeroCorrelativo;
+  }
+
+  public function obtenerCotizacionCompleta($cotizacionID)
+  {
+    $conexion = Conexion::conectarBD();
+    $cotizacionID = (int)$cotizacionID;
+
+    // Obtener información principal de la cotización y del cliente
+    $sqlCot = "
+        SELECT
+            ce.CotizacionEmitidaID,
+            ce.SerieComprobanteID,
+            ce.NumeroCorrelativo,
+            ce.UsuarioID,
+            ce.FechaEmision,
+            ce.FechaVencimiento,
+            ce.TipoPago,
+            ce.FormaPago,
+            ce.Moneda,
+            ce.ClienteID,
+            cl.NombreCompletoORazonSocial AS Cliente,
+            ce.`Op.Gravada` AS OpGravada,
+            ce.`Op.Inafecta` AS OpInafecta,
+            ce.`Op.Exonerada` AS OpExonerada,
+            ce.`Op.Gratuita` AS OpGratuita,
+            ce.TotalIGV,
+            ce.DescuentoGlobal,
+            ce.ImporteTotal,
+            ce.Observaciones,
+            ce.Obra
+        FROM cotizacionemitida ce
+        INNER JOIN cliente cl ON ce.ClienteID = cl.ClienteID
+        WHERE ce.CotizacionEmitidaID = $cotizacionID
+        LIMIT 1
+    ";
+
+    $resCot = $conexion->query($sqlCot);
+
+    if (!$resCot) {
+      die("Error al obtener la cotización: " . $conexion->error);
+    }
+
+    if ($resCot->num_rows == 0) {
+      // No se encontró la cotización
+      Conexion::desConectarBD();
+      return null;
+    }
+
+    $cotizacion = $resCot->fetch_assoc();
+
+    // Obtener los detalles de la cotización
+    $sqlDet = "
+        SELECT
+            ced.CotizacionEmitidaDetallesID,
+            ced.CotizacionEmitidaID,
+            ced.ProductoDetallesID,
+            ced.Cantidad,
+            ced.PrecioUnitarioVenta,
+            ced.ValorUnitarioVenta,
+            ced.Descuento,
+            ced.Total,
+            p.Descripcion AS NombreProducto,
+            pd.UnidadMedida,
+            pd.ValorUnitarioCompra,
+            p.CodigoProducto
+        FROM cotizacionemitidadetalles ced
+        INNER JOIN productodetalles pd ON ced.ProductoDetallesID = pd.ProductoDetallesID
+        INNER JOIN producto p ON pd.ProductoID = p.ProductoID
+        WHERE ced.CotizacionEmitidaID = $cotizacionID
+    ";
+
+    $resDet = $conexion->query($sqlDet);
+
+    if (!$resDet) {
+      die("Error al obtener los detalles de la cotización: " . $conexion->error);
+    }
+
+    $detalles = [];
+    while ($filaDet = $resDet->fetch_assoc()) {
+      $detalles[] = $filaDet;
+    }
+
+    Conexion::desConectarBD();
+
+    // Añadir los detalles al array principal de la cotización
+    $cotizacion['Detalles'] = $detalles;
+
+    return $cotizacion;
+  }
+  public function obtenerCotizacionesResumen()
+  {
+    $conexion = Conexion::conectarBD();
+    $sql = "SELECT ce.NumeroCorrelativo, cl.NombreCompletoORazonSocial AS Cliente, ce.Obra, ce.FechaEmision, ce.Moneda, ce.ImporteTotal
+            FROM cotizacionemitida ce
+            INNER JOIN cliente cl ON ce.ClienteID = cl.ClienteID
+            ORDER BY ce.FechaEmision DESC";
+
+    $resultado = $conexion->query($sql);
+
+    if (!$resultado) {
+      die("Error al obtener cotizaciones: " . $conexion->error);
+    }
+
+    $cotizaciones = array();
+    while ($fila = $resultado->fetch_assoc()) {
+      $cotizaciones[] = $fila;
+    }
+
+    Conexion::desConectarBD();
+    return $cotizaciones;
   }
 }
