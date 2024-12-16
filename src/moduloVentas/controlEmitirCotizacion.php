@@ -76,6 +76,10 @@ class controlEmitirCotizacion
           th {
               background-color: #f2f2f2;
           }
+          .info p {
+              margin: 0;
+              font-size: 0.9rem;
+          }
         </style>
         <header>
             <img src="/assets/img/logo.png" alt="Logo">
@@ -106,8 +110,44 @@ class controlEmitirCotizacion
                     <td>S/. ' . number_format($importeTotal, 2) . '</td>
                 </tr>
             </tbody>
-        </table>
-        
+        </table>';
+
+    // Tabla de detalles de productos
+    if (isset($cotizacion['Detalles']) && is_array($cotizacion['Detalles']) && count($cotizacion['Detalles']) > 0) {
+      $html .= '
+        <h3>Productos</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th><strong>Producto</strong></th>
+                    <th><strong>Cantidad</strong></th>
+                    <th><strong>Precio Unitario</strong></th>
+                    <th><strong>Total</strong></th>
+                </tr>
+            </thead>
+            <tbody>';
+
+      foreach ($cotizacion['Detalles'] as $detalle) {
+        $nombreProducto = $detalle['NombreProducto'];
+        $cantidad = $detalle['Cantidad'];
+        $precioUnitario = $detalle['PrecioUnitarioVenta'];
+        $totalLinea = $detalle['Total'];
+
+        $html .= '
+                <tr>
+                    <td>' . $nombreProducto . '</td>
+                    <td>' . $cantidad . '</td>
+                    <td>S/. ' . number_format($precioUnitario, 2) . '</td>
+                    <td>S/. ' . number_format($totalLinea, 2) . '</td>
+                </tr>';
+      }
+
+      $html .= '
+            </tbody>
+        </table>';
+    }
+
+    $html .= '
         <div class="info">
             <p>Fecha de generación: ' . date('Y-m-d H:i:s') . '</p>
         </div>';
