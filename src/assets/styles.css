@@ -1,0 +1,161 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+main {
+  padding: 2rem;
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+main h1 {
+  color: #00695c;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+.filters-container{
+  background: #b2dfdb; /* Un tono claro del turquesa */
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.filters-container .flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filters-container h2 {
+  color: #004d40; /* Más oscuro para contraste */
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.filters-container button {
+  background: #00695c;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.filters-container button:hover {
+  background: #004d40;
+}
+
+.filters {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-container label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #004d40;
+}
+
+.input-container input[type="text"],
+.input-container input[type="date"] {
+  padding: 0.5rem;
+  border: 1px solid #80cbc4;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #333;
+}
+
+.table-cotizaciones {
+  margin-top: 2rem;
+  overflow-x: auto;
+}
+
+.table-cotizaciones table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-cotizaciones thead {
+  background: #00695c;
+  color: #fff;
+}
+
+.table-cotizaciones thead th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: normal;
+}
+
+.table-cotizaciones tbody td {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-cotizaciones tbody tr:hover {
+  background: #e0f2f1;
+}
+
+.estado {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+/* Ejemplo de estados con diferente color, puedes ajustarlos */
+.estado.enviado {
+  color: #00695c;
+}
+.estado.procesado {
+  color: #009688;
+}
+.estado.cancelado {
+  color: #c62828;
+}
+
+.label-button {
+  display: inline-block;
+  background: #00695c;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.label-button:hover {
+  background: #004d40;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+  }
+
+  .filters-container .flex {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filters-container h2,
+  .filters-container button {
+    margin-bottom: 0.5rem;
+  }
+}

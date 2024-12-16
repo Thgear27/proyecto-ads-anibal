@@ -336,31 +336,6 @@ INSERT INTO `facturaemitidadetalles` VALUES (1,1,10,5,452.32,384,0,2261.6),(2,1,
 UNLOCK TABLES;
 
 --
--- Table structure for table `privilegio`
---
-
-DROP TABLE IF EXISTS `privilegio`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `privilegio` (
-  `PrivilegioID` int NOT NULL AUTO_INCREMENT,
-  `NombrePrivilegio` varchar(255) NOT NULL,
-  PRIMARY KEY (`PrivilegioID`),
-  UNIQUE KEY `PrivilegioID` (`PrivilegioID`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `privilegio`
---
-
-LOCK TABLES `privilegio` WRITE;
-/*!40000 ALTER TABLE `privilegio` DISABLE KEYS */;
-INSERT INTO `privilegio` VALUES (1,'Emitir cotizacion'),(2,'Emitir documentos comerciales'),(3,'Gestionar productos'),(4,'Generar reportes'),(5,'Gestionar usuarios');
-/*!40000 ALTER TABLE `privilegio` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `producto`
 --
 
@@ -371,6 +346,8 @@ CREATE TABLE `producto` (
   `ProductoID` int NOT NULL AUTO_INCREMENT,
   `CodigoProducto` varchar(255) NOT NULL,
   `Descripcion` varchar(255) NOT NULL,
+  `ValorUnitarioVenta` double NOT NULL,
+  `EstadoProducto` int NOT NULL,
   PRIMARY KEY (`ProductoID`),
   UNIQUE KEY `ProductoID` (`ProductoID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -382,7 +359,7 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (1,'PNT-EXTR-WB-001','Pintura exterior blanca 5 galones'),(2,'DSC-CORT-MET-115','Disco de corte para metal 115 mm'),(3,'LJA-MET-60-012','Lija para metal grano 60'),(4,'AMOL-4P-750W-001','Amoladora 4 pulgadas 750W'),(5,'CARG-MACH-002','Máquina de carga industrial'),(6,'ALM-GALV-14-003','Alambre galvanizado calibre 14'),(7,'CBL-VOLC-3X4-004','Cable volcánico 3x4 mm²'),(8,'PNT-INT-WB-005','Pintura interior color blanco 1 galón'),(9,'DSC-CORT-HOR-125','Disco de corte para hormigón 125 mm'),(10,'LJA-AGUA-220-006','Lija al agua grano 220'),(11,'CBL-VOLC-3X6-007','Cable volcánico 3x6 mm²'),(12,'MAQ-TALADRO-008','Taladro industrial 800W'),(13,'SELL-SILICON-009','Sellador de silicona para exteriores'),(14,'CINT-MEDID-10M-010','Cinta métrica de 10 metros'),(15,'BULB-INDUST-011','Bombilla industrial 100W LED');
+INSERT INTO `producto` VALUES (1,'PNT-EXTR-WB-001','Pintura exterior blanca 5 galones',130,1),(2,'DSC-CORT-MET-115','Disco de corte para metal 115 mm',5,1),(3,'LJA-MET-60-012','Lija para metal grano 60',2.5,1),(4,'AMOL-4P-750W-001','Amoladora 4 pulgadas 750W',320,1),(5,'CARG-MACH-002','Máquina de carga industrial',5000,1),(6,'ALM-GALV-14-003','Alambre galvanizado calibre 14',150,1),(7,'CBL-VOLC-3X4-004','Cable volcánico 3x4 mm²',18,1),(8,'PNT-INT-WB-005','Pintura interior color blanco 1 galón',50,1),(9,'DSC-CORT-HOR-125','Disco de corte para hormigón 125 mm',7.5,1),(10,'LJA-AGUA-220-006','Lija al agua grano 220',3,1),(11,'CBL-VOLC-3X6-007','Cable volcánico 3x6 mm²',25,1),(12,'MAQ-TALADRO-008','Taladro industrial 800W',350,1),(13,'SELL-SILICON-009','Sellador de silicona para exteriores',10,1),(14,'CINT-MEDID-10M-010','Cinta métrica de 10 metros',15,1),(15,'BULB-INDUST-011','Bombilla industrial 100W LED',25,1);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -398,7 +375,6 @@ CREATE TABLE `productodetalles` (
   `ProductoID` int NOT NULL,
   `UnidadMedida` varchar(255) NOT NULL,
   `ValorUnitarioCompra` double NOT NULL,
-  `ValorUnitarioVenta` double NOT NULL,
   `CategoriaFiscal` varchar(255) NOT NULL,
   `ProveedorID` int NOT NULL,
   PRIMARY KEY (`ProductoDetallesID`),
@@ -416,7 +392,7 @@ CREATE TABLE `productodetalles` (
 
 LOCK TABLES `productodetalles` WRITE;
 /*!40000 ALTER TABLE `productodetalles` DISABLE KEYS */;
-INSERT INTO `productodetalles` VALUES (1,1,'Unidad',130,156,'Gravado',1),(2,2,'Unidad',5,6,'Gravado',1),(3,3,'Bolsa',2.5,3,'Gravado',1),(4,10,'Bolsa',3,3.6,'Gravado',1),(5,13,'Unidad',10,12,'Gravado',1),(6,7,'Metro',18,21.6,'Gravado',2),(7,11,'Metro',25,30,'Gravado',2),(8,8,'Unidad',50,60,'Gravado',3),(9,9,'Unidad',7.5,9,'Gravado',3),(10,4,'Unidad',320,384,'Gravado',4),(11,5,'Unidad',5000,6000,'Gravado',4),(12,12,'Unidad',350,420,'Gravado',4),(13,6,'Unidad',150,180,'Gravado',4),(14,14,'Unidad',15,18,'Gravado',2),(15,15,'Unidad',25,30,'Gravado',2);
+INSERT INTO `productodetalles` VALUES (1,1,'Unidad',130,'Gravado',1),(2,2,'Unidad',5,'Gravado',1),(3,3,'Bolsa',2.5,'Gravado',1),(4,10,'Bolsa',3,'Gravado',1),(5,13,'Unidad',10,'Gravado',1),(6,7,'Metro',18,'Gravado',2),(7,11,'Metro',25,'Gravado',2),(8,8,'Unidad',50,'Gravado',3),(9,9,'Unidad',7.5,'Gravado',3),(10,4,'Unidad',320,'Gravado',4),(11,5,'Unidad',5000,'Gravado',4),(12,12,'Unidad',350,'Gravado',4),(13,6,'Unidad',150,'Gravado',4),(14,14,'Unidad',15,'Gravado',2),(15,15,'Unidad',25,'Gravado',2);
 /*!40000 ALTER TABLE `productodetalles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -464,6 +440,7 @@ CREATE TABLE `referencianotacredito` (
   `FechaDocumento` date NOT NULL,
   `MotivoNotaCredito` varchar(255) NOT NULL,
   `Descripcion` varchar(255) NOT NULL,
+  `FacturaEmitidaID` varchar(45) NOT NULL,
   PRIMARY KEY (`ReferenciaNotaCreditoID`),
   UNIQUE KEY `ReferenciaNotaCreditoID` (`ReferenciaNotaCreditoID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -476,6 +453,30 @@ CREATE TABLE `referencianotacredito` (
 LOCK TABLES `referencianotacredito` WRITE;
 /*!40000 ALTER TABLE `referencianotacredito` DISABLE KEYS */;
 /*!40000 ALTER TABLE `referencianotacredito` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rol`
+--
+
+DROP TABLE IF EXISTS `rol`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rol` (
+  `RolID` int NOT NULL AUTO_INCREMENT,
+  `NombreRol` varchar(45) NOT NULL,
+  PRIMARY KEY (`RolID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rol`
+--
+
+LOCK TABLES `rol` WRITE;
+/*!40000 ALTER TABLE `rol` DISABLE KEYS */;
+INSERT INTO `rol` VALUES (1,'Almacen'),(2,'Tienda'),(3,'Administrador');
+/*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -519,13 +520,13 @@ CREATE TABLE `usuario` (
   `Telefono` varchar(15) DEFAULT NULL,
   `Email` varchar(255) DEFAULT NULL,
   `DNI` varchar(15) DEFAULT NULL,
-  `PreguntaSecreta` varchar(255) DEFAULT NULL,
   `RespuestaSecreta` varchar(255) DEFAULT NULL,
   `FechaCreacion` date NOT NULL,
-  `EstadoUsuario` varchar(255) NOT NULL,
+  `EstadoUsuario` int NOT NULL,
+  `RolID` int NOT NULL,
   PRIMARY KEY (`UsuarioID`),
   UNIQUE KEY `UsuarioID` (`UsuarioID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -534,39 +535,8 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'rocaAdmin','passw0rd123','Carlos','Roca Fernández','987654321','admin@edificandolaroca.com','12345678','¿Cómo se llama tu mejor amigo/a de la infancia?','Carlos','2024-10-21','Activo'),(2,'pepeLijas','pepelij4s2024','Pepe','Lijas Ramírez','987654322','pepe@lijasmax.com','12345679','¿Cuál es el nombre de tu primera mascota?','Firulais','2024-10-21','Activo'),(3,'corteMaster','AGUMON2004','Juan','Corte Díaz','987654323','master@cortediscos.com','12345680','¿Cuál es el nombre de tu primera mascota?','Cusco','2024-10-21','Activo'),(4,'lijaKing','kinglijas2024','Luis','Rey Martínez','987654324','king@lijaspro.com','12345681','¿Cuál es tu comida favorita?','Pizza','2024-10-20','Activo'),(5,'silicoman','si1icon321','Silvia','Conam Torres','987654325','man@siliconaspro.com','12345682','¿En qué ciudad naciste?','Arequipa','2024-10-20','Activo'),(6,'pinturaMax','paintM4ster','María','Pintura López','987654326','ventas@pinturasmax.com','12345683','¿En qué ciudad naciste?','Trujillo','2024-10-20','Activo'),(7,'cableVolc','volcable2024','Pedro','Cable Gómez','987654327','info@cablesvolcanicos.com','12345684','¿En qué ciudad naciste?','Lima','2024-10-19','Activo'),(8,'discoMetal','discoM3tal','Diego','Metal Vargas','987654328','ventas@discosmetal.com','12345685','¿En qué ciudad naciste?','Tacos','2024-10-19','Activo'),(9,'amoloPro','amoloPro2024','Ana','Molo Sánchez','987654329','pro@amoladoras.com','12345686','¿En qué ciudad naciste?','Piura','2024-10-19','Activo'),(10,'soldaBoss','s0ldab0ss','Jorge','Solda Pérez','987654330','boss@soldaduras.com','12345687','¿Cuál fue el nombre de tu primer colegio?','San Pedro','2024-10-18','Activo'),(11,'nuevo_nombre_usuario','nueva_contraseña','nuevos_nombres','nuevos_apellidos','nuevo_telefono','nuevo_email','nuevo_dni','nueva_pregunta_secreta','nueva_respuesta_secreta','2024-12-11','Activo');
+INSERT INTO `usuario` VALUES (1,'rocaAdmin','passw0rd123','Carlos','Roca Fernández','987654321','admin@edificandolaroca.com','12345678','Carlos','2024-10-21',1,0),(2,'pepeLijas','pepelij4s2024','Pepe','Lijas Ramírez','987654322','pepe@lijasmax.com','12345679','Firulais','2024-10-21',0,0),(3,'corteMaster','AGUMON2004','Juan','Corte Díaz','987654323','master@cortediscos.com','12345680','Cusco','2024-10-21',1,0),(4,'lijaKing','kinglijas2024','Luis','Rey Martínez','987654324','king@lijaspro.com','12345681','Pizza','2024-10-20',1,0),(5,'silicoman','si1icon321','Silvia','Conam Torres','987654325','man@siliconaspro.com','12345682','Arequipa','2024-10-20',1,0),(6,'pinturaMax','contraseña','María','Pintura López','987654326','ventas@pinturasmax.com','12345683','Trujillo','2024-10-20',1,0),(7,'cableVolc','TACZA_developer','Pedro','Cable Gómez','987654327','info@cablesvolcanicos.com','12345684','Lima','2024-10-19',1,0),(8,'discoMetal','discoM3tal','Diego','Metal Vargas','987654328','ventas@discosmetal.com','12345685','Tacos','2024-10-19',0,0),(9,'amoloPro','amoloPro2024','Ana','Molo Sánchez','987654329','pro@amoladoras.com','12345686','Piura','2024-10-19',1,0),(10,'soldaBoss','s0ldab0ss','Jorge','Solda Pérez','987654330','boss@soldaduras.com','12345687','San Pedro','2024-10-18',0,0),(11,'nuevo_nombre_usuario','nueva_contraseña','nuevos_nombres','nuevos_apellidos','nuevo_telefono','nuevo_email','nuevo_dni','nueva_respuesta_secreta','2024-12-11',0,0),(13,'nuevo_nombre_usuario','nueva_contraseña','nuevos_nombres','nuevos_apellidos','nuevo_telefono','nuevo_email','nuevo_dni','nueva_respuesta_secreta','2024-12-14',1,0),(14,'Jimmy_saurux2004','12345','Jimmy Alexander','Huerta Vasquez','906272595','2123010236@gmail.com','72192033','Pinpon','2024-12-14',1,0);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `usuarioprivilegio`
---
-
-DROP TABLE IF EXISTS `usuarioprivilegio`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `usuarioprivilegio` (
-  `UsuarioPrivilegioID` int NOT NULL AUTO_INCREMENT,
-  `UsuarioID` int NOT NULL,
-  `PrivilegioID` int NOT NULL,
-  `Habilitado` tinyint DEFAULT '0',
-  PRIMARY KEY (`UsuarioPrivilegioID`),
-  UNIQUE KEY `UsuarioPrivilegioID` (`UsuarioPrivilegioID`),
-  KEY `PrivilegioID` (`PrivilegioID`),
-  KEY `UsuarioID` (`UsuarioID`),
-  CONSTRAINT `usuarioprivilegio_ibfk_1` FOREIGN KEY (`PrivilegioID`) REFERENCES `privilegio` (`PrivilegioID`),
-  CONSTRAINT `usuarioprivilegio_ibfk_2` FOREIGN KEY (`UsuarioID`) REFERENCES `usuario` (`UsuarioID`)
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `usuarioprivilegio`
---
-
-LOCK TABLES `usuarioprivilegio` WRITE;
-/*!40000 ALTER TABLE `usuarioprivilegio` DISABLE KEYS */;
-INSERT INTO `usuarioprivilegio` VALUES (26,1,1,1),(27,1,2,1),(28,1,3,1),(29,1,4,1),(30,1,5,1),(32,2,1,0),(33,2,2,0),(34,2,3,1),(35,2,4,1),(36,2,5,0),(38,3,1,0),(39,3,2,1),(40,3,3,1),(41,3,4,0),(42,3,5,1),(44,4,1,0),(45,4,2,1),(46,4,3,0),(47,4,4,1),(48,4,5,1),(50,5,1,1),(51,5,2,1),(52,5,3,1),(53,5,4,0),(54,5,5,0),(56,6,1,0),(57,6,2,0),(58,6,3,0),(59,6,4,0),(60,6,5,0),(62,7,1,0),(63,7,2,1),(64,7,3,0),(65,7,4,0),(66,7,5,0),(68,8,1,0),(69,8,2,0),(70,8,3,0),(71,8,4,1),(72,8,5,1),(74,9,1,1),(75,9,2,0),(76,9,3,0),(77,9,4,0),(78,9,5,1),(80,10,1,1),(81,10,2,0),(82,10,3,1),(83,10,4,0),(84,10,5,0);
-/*!40000 ALTER TABLE `usuarioprivilegio` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -578,4 +548,5 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-13  0:21:36
+-- Dump completed on 2024-12-15 16:50:44
+
