@@ -11,13 +11,15 @@ function validarTexto($txtLogin,$txtPassword)
         return 0;    
 }
 
-if(validarBoton($_POST['btnAceptar']))
+$btnAceptar = $_POST['btnAceptar'] ?? null;
+
+if(validarBoton($btnAceptar))
 {
     if(validarTexto($_POST['txtLogin'],$_POST['txtPassword']))
     {
         $login= strtolower(trim($_POST['txtLogin']));
         $password = $_POST['txtPassword'];
-        include_once('controlAutenticarusuario.php');
+        include_once('controlAutenticarUsuario.php');
         $obcontrol = new controlAutenticarUsuario();
         $obcontrol -> verificarUsuario($login,$password);
     }
