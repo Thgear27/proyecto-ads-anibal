@@ -27,3 +27,7 @@ $cotizaciones = $cotizacionesObj->getCotizaciones($numerocotizacion, $fechadesde
 
 $panelCotizacionObject = new panelCotizacion();
 $panelCotizacionObject->panelCotizacionShow($cotizaciones);
+
+?>
+
+<h1>HOLA</h1>
