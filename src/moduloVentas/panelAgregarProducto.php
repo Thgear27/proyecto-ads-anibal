@@ -1,9 +1,9 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/shared/pantalla.php');
 
-class panelGestionarProductos extends pantalla
+class panelAgregarProducto extends pantalla
 {
-    public function panelGestionarProductosShow($productos = null)
+    public function panelAgregarProductoShow()
     {
         if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] != "SI") {
             header("Location: /");
@@ -80,61 +80,57 @@ class panelGestionarProductos extends pantalla
             </aside>
 
             <!-- Contenido principal -->
-            <main style="padding: 0 2rem;">
-                <h1 style="color: #00695c;">Gestión de productos</h1>
+            <main style="display: flex; justify-content: center; align-items: center; flex: 1;">
+                <div class="form-container">
+                    <h2>Productos</h2>
+                    <form method="post" action="getProducto.php">
+                        <!-- Campo Nombre -->
+                        <div class="form-input">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" id="nombre" placeholder="Ingrese el nombre">
+                        </div>
 
-                <form method="post" action="../moduloVentas/getProducto.php">
-                    <button type="submit" name="btnAgregarProducto" class="btn agregar"><i class="fa-solid fa-plus" style="color: #FFF;"></i>Agregar producto</button>
-                </form>
+                        <!-- Campo Medida -->
+                        <div class="form-input">
+                            <label for="proveedores">Medida:</label>
+                            <select id="proveedores">
+                                <option value="">Seleccione una medida</option>
+                                <option value="Unidad">Unidad</option>
+                                <option value="Bolsa">Bolsa</option>
+                                <option value="Metro">Metro</option>
+                            </select>
+                        </div>
 
-                <div class="table-cotizaciones">
-                    <table id="productos-table">
-                        <thead>
-                            <tr>
-                                <th>Nro</th>
-                                <th>Nombre</th>
-                                <th>Medida</th>
-                                <th>Venta</th>
-                                <th>Compra</th>
-                                <th>Proveedor</th>
-                                <th colspan="2" class="centered-colspan">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($productos !== null) : ?>
+                        <!-- Precio de Venta -->
+                        <div class="form-input">
+                            <label for="precio-venta">Precio de venta:</label>
+                            <input type="number" id="precio-venta" placeholder="Ingrese el precio de venta" step="0.01" min="0">
+                        </div>
 
-                                <?php foreach ($productos as $producto) : ?>
-                                    <tr>
-                                        <td><?= $producto['ProductoID']; ?></td>
-                                        <td><?= $producto['Descripcion']; ?></td>
-                                        <td><?= $producto['UnidadMedida']; ?></td>
-                                        <td><?= $producto['ValorUnitarioVenta']; ?></td>
-                                        <td><?= $producto['ValorUnitarioCompra']; ?></td>
-                                        <td><?= $producto['RazonSocial']; ?></td>
-                                        <form method="post" action="../moduloVentas/getProducto.php">
-                                            <td>
-                                                <button type="submit" name="btnEditarProducto" class="btn editar">
-                                                    <i class="fa-solid fa-pen-to-square"></i>Editar
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button type="submit" name="btnEliminarProducto" class="btn eliminar">
-                                                    <i class="fa-solid fa-trash"></i>Eliminar
-                                                </button>
-                                            </td>
-                                        </form>
-                                    </tr>
-                                <?php endforeach; ?>
+                        <!-- Precio de Costo -->
+                        <div class="form-input">
+                            <label for="precio-costo">Precio de costo:</label>
+                            <input type="number" id="precio-costo" placeholder="Ingrese el precio de costo" step="0.01" min="0">
+                        </div>
 
-                            <?php else : ?>
-                                <tr>
-                                    <td colspan="6">No se encontraron productos.</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                        <!-- Proveedores Dropdown -->
+                        <div class="form-input">
+                            <label for="proveedores">Proveedores:</label>
+                            <select id="proveedores">
+                                <option value="">Seleccione un proveedor</option>
+                                <option value="proveedor1">Proveedor 1</option>
+                                <option value="proveedor2">Proveedor 2</option>
+                                <option value="proveedor3">Proveedor 3</option>
+                            </select>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="form-buttons">
+                            <button type="submit" name="btnCancelarForm" class="btn cancelar">Cancelar</button>
+                            <button type="submit" name="btnGuardarProducto" class="btn guardar">Guardar</button>
+                        </div>
+                    </form>
                 </div>
-
             </main>
         </div>
 <?php
