@@ -1,9 +1,9 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/shared/pantalla.php');
 
-class panelGestionarProductos extends pantalla
+class panelEditarProducto extends pantalla
 {
-    public function panelGestionarProductosShow($productos = null)
+    public function panelEditarProductoShow($datosProducto, $proveedores)
     {
         if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] != "SI") {
             header("Location: /");
@@ -80,62 +80,71 @@ class panelGestionarProductos extends pantalla
             </aside>
 
             <!-- Contenido principal -->
-            <main style="padding: 0 2rem;">
-                <h1 style="color: #00695c;">Gestión de productos</h1>
+            <main style="display: flex; justify-content: center; align-items: center; flex: 1;">
+                <div class="form-container">
+                    <h2>Editar producto</h2>
+                    <form method="post" action="getProducto.php">
+                        <!-- Campo Nombre -->
+                        <div class="form-input">
+                            <label for="codigo">Código:</label>
+                            <input type="text" name="codigo" id="codigo" value="<?php echo $datosProducto['CodigoProducto'] ?>" placeholder="Ingrese el código">
+                        </div>
 
-                <form method="post" action="../moduloVentas/getProducto.php">
-                    <button type="submit" name="btnAgregarProducto" class="btn agregar"><i class="fa-solid fa-plus" style="color: #FFF;"></i>Agregar producto</button>
-                </form>
+                        <div class="form-input">
+                            <label for="descripcion">Descripción:</label>
+                            <textarea name="descripcion" id="descripcion" placeholder="Ingrese la descripción"><?php echo $datosProducto['Descripcion'] ?></textarea>
+                        </div>
 
-                <div class="table-cotizaciones">
-                    <table id="productos-table">
-                        <thead>
-                            <tr>
-                                <th>Nro</th>
-                                <th>Nombre</th>
-                                <th>Medida</th>
-                                <th>Venta</th>
-                                <th>Compra</th>
-                                <th>Proveedor</th>
-                                <th colspan="2" class="centered-colspan">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($productos !== null) : ?>
+                        <!-- Campo Medida -->
+                        <div class="form-input">
+                            <label for="medida">Medida:</label>
+                            <select name="medida" id="medida">
+                                <option value="">Seleccione una medida</option>
+                                <?php
+                                $medidas = ["Unidad", "Bolsa", "Metro"];
+                                foreach ($medidas as $medida) {
+                                    $selected = $datosProducto['UnidadMedida'] == $medida ? "selected" : "";
+                                ?>
+                                <option value="<?php echo $medida ?>" <?php echo $selected ?>><?php echo $medida ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
 
-                                <?php foreach ($productos as $producto) : ?>
-                                    <tr>
-                                        <td><?= $producto['ProductoID']; ?></td>
-                                        <td><?= $producto['Descripcion']; ?></td>
-                                        <td><?= $producto['UnidadMedida']; ?></td>
-                                        <td><?= $producto['ValorUnitarioVenta']; ?></td>
-                                        <td><?= $producto['ValorUnitarioCompra']; ?></td>
-                                        <td><?= $producto['RazonSocial']; ?></td>
-                                        <form method="post" action="../moduloVentas/getProducto.php">
-                                            <input type="hidden" name="idProducto" value="<?= $producto['ProductoID']; ?>">
-                                            <td>
-                                                <button type="submit" name="btnEditarProducto" class="btn editar">
-                                                    <i class="fa-solid fa-pen-to-square"></i>Editar
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button type="submit" name="btnEliminarProducto" class="btn eliminar">
-                                                    <i class="fa-solid fa-trash"></i>Eliminar
-                                                </button>
-                                            </td>
-                                        </form>
-                                    </tr>
-                                <?php endforeach; ?>
+                        <!-- Precio de Venta -->
+                        <div class="form-input">
+                            <label for="precioVenta">Precio de venta:</label>
+                            <input type="number" name="precioVenta" id="precioVenta" value="<?php echo $datosProducto['ValorUnitarioVenta'] ?>" placeholder="Ingrese el precio de venta" step="0.01" min="0">
+                        </div>
 
-                            <?php else : ?>
-                                <tr>
-                                    <td colspan="6">No se encontraron productos.</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                        <!-- Precio de Costo -->
+                        <div class="form-input">
+                            <label for="precioCompra">Precio de compra:</label>
+                            <input type="number" name="precioCompra" id="precioCompra" value="<?php echo $datosProducto['ValorUnitarioCompra'] ?>" placeholder="Ingrese el precio de compra" step="0.01" min="0">
+                        </div>
+
+                        <!-- Proveedores -->
+                        <div class="form-input">
+                            <label for="proveedor">Proveedores:</label>
+                            <select name="proveedor" id="proveedor">
+                                <option value="">Seleccione un proveedor</option>
+                                <?php foreach ($proveedores as $proveedor){
+                                    $idProveedor = $proveedor['ProveedorID'];
+                                    $razonSocial = $proveedor['RazonSocial'];
+                                    $selected = $datosProducto['ProveedorID'] == $idProveedor ? "selected" : "";
+                                ?>
+                                <option value="<?php echo $idProveedor ?>" <?php echo $selected ?>><?php echo $razonSocial ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="form-buttons">
+                            <input type="hidden" name="idProducto" value="<?php echo $datosProducto['ProductoID']; ?>">
+                            <a href="indexGestionarProductos.php" class="btn cancelar">Cancelar</a>
+                            <button type="submit" name="btnGuardar" class="btn guardar">Guardar</button>
+                        </div>
+                    </form>
                 </div>
-
             </main>
         </div>
 <?php
