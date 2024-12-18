@@ -40,36 +40,37 @@ class formAutenticarUsuario extends Pantalla
       }
     </style>
 
-    <form name="autenticarUsuario" method="POST" action="./moduloSeguridad/getUsuario.php">
-      <table align="center" border="0">
+<form name="autenticarUsuario" method="POST" action="./moduloSeguridad/getUsuario.php">
+    <table align="center" border="0">
         <tr>
-          <td colspan="2" align="left">EDIFICANDO SOBRE LA ROCA E.I.R.L</td>
+            <td colspan="2" align="left">EDIFICANDO SOBRE LA ROCA E.I.R.L</td>
         </tr>
         <tr>
-          <td rowspan="3" align="left">
-            <img width="80" height="50" src="./moduloSeguridad/candado.png" alt="Descripción">
-          </td>
+            <td rowspan="3" align="left">
+                <img width="80" height="50" src="./moduloSeguridad/candado.png" alt="Descripción">
+            </td>
         </tr>
         <tr>
-          <td>Login:</td>
-          <td><input name="txtLogin" id="txtLogin" type="text" required /></td>
+            <td>Login:</td>
+            <td><input name="txtLogin" id="txtLogin" type="text" /></td>
         </tr>
         <tr>
-          <td>Password:</td>
-          <td><input name="txtPassword" id="txtPassword" type="password" minlength="4" required /></td>
+            <td>Password:</td>
+            <td><input name="txtPassword" id="txtPassword" type="password" minlength="4" /></td>
         </tr>
         <tr>
-          <td colspan="2" align="center">
-            <input type="submit" name="btnAceptar" value="Ingresar" />
-          </td>
+            <td colspan="2" align="center">
+                <input type="submit" name="btnAceptar" value="Ingresar" />
+            </td>
         </tr>
         <tr>
-          <td colspan="2" align="center">
-            <a href="./moduloSeguridad/indexReestablecerContrasena.php">Reestablecer contraseña</a>
-          </td>
+            <td colspan="2" align="center">
+                <a href="./moduloSeguridad/indexReestablecerContrasena.php">Reestablecer contraseña</a>
+            </td>
         </tr>
-      </table>
-    </form>
+    </table>
+</form>
+
 
 <?php
     $this->pieShow();
