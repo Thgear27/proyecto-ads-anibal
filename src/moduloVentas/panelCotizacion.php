@@ -56,7 +56,7 @@ class panelCotizacion extends pantalla
               <li><a href="../moduloVentas/confirmarProductos.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Nota de Credito</a></li>
               <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Productos</a></li>
               <li><a href="../moduloVentas/emitirBoleta.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Proveedores</a></li>
-              <li><a href="../moduloVentas/confirmarProductos.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Reporte</a></li>
+              <li><a href="../moduloVentas/indexReporteventas.php " style="color: white; text-decoration: none; display: block; padding: 8px;">Reporte Ventas</a></li>
               <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Compras</a></li>
               <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Usuarios</a></li>
             <?php
@@ -71,7 +71,7 @@ class panelCotizacion extends pantalla
             <?php
             }
             ?>
-            <li><a href="../moduloSeguridad/cerrarSesion.php" style="color: red; text-decoration: none; display: block; padding: 8px;">Cerrar Sesión</a></li>
+            <li><a href='../index.php' style="color: red; text-decoration: none; display: block; padding: 8px;">Cerrar Sesión</a></li>
           </ul>
         </nav>
       </aside>
