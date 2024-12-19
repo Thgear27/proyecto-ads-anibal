@@ -71,7 +71,7 @@ class panelEmitirCotizacion extends pantalla
             <?php
             }
             ?>
-            <li><a href="../moduloSeguridad/cerrarSesion.php" style="color: red; text-decoration: none; display: block; padding: 8px;">Cerrar Sesión</a></li>
+            <li><a href="/moduloSeguridad/cerrarSesion.php" style="color: red; text-decoration: none; display: block; padding: 8px;">Cerrar Sesión</a></li>
           </ul>
         </nav>
       </aside>
