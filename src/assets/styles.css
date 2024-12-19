@@ -172,7 +172,7 @@ th.centered-colspan {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #FFF;
+  color: #fff;
   font-size: 16px;
   font-weight: bold;
   padding: 10px 10px;
@@ -182,7 +182,7 @@ th.centered-colspan {
 }
 
 .btn.agregar {
-  background: #007BFF;
+  background: #007bff;
 }
 
 .btn.editar {
@@ -226,7 +226,9 @@ button i {
   font-weight: bold;
 }
 
-.form-input input, .form-input select, .form-input textarea {
+.form-input input,
+.form-input select,
+.form-input textarea {
   width: 65%;
   padding: 8px;
   border: 1px solid #94d6d0;
@@ -235,7 +237,8 @@ button i {
   resize: none;
 }
 
-.form-input input:focus, .form-input select:focus {
+.form-input input:focus,
+.form-input select:focus {
   outline: none;
   border: 2px solid #00796b;
 }
@@ -295,8 +298,6 @@ button i {
 .btn-yes {
   background-color: #27ae60;
 }
-
-
 
 /* Ajustes responsivos */
 @media (max-width: 768px) {
@@ -372,7 +373,6 @@ button i {
   overflow-x: auto;
 }
 
-
 /* Responsive */
 @media (max-width: 600px) {
   .emitir-cotizacion {
@@ -380,5 +380,71 @@ button i {
   }
   .emitir-cotizacion .input-container {
     margin-bottom: 1rem;
+  }
+}
+
+.table-facturas {
+  margin-top: 2rem;
+  overflow-x: auto;
+}
+
+.table-facturas table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-facturas thead {
+  background: #00695c; /* Verde oscuro */
+  color: #fff;
+}
+
+.table-facturas thead th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: normal;
+}
+
+.table-facturas tbody td {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+  color: #333;
+}
+
+.table-facturas tbody tr:hover {
+  background: #e0f2f1; /* Fondo claro para hover */
+}
+
+.table-facturas tbody tr:last-child td {
+  border-bottom: none; /* Quitar línea inferior en la última fila */
+}
+
+.table-facturas input[type="submit"] {
+  background: #00695c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.table-facturas input[type="submit"]:hover {
+  background: #004d40; /* Más oscuro para hover */
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .table-facturas table {
+    font-size: 0.9rem;
+  }
+
+  .table-facturas thead th,
+  .table-facturas tbody td {
+    padding: 0.5rem;
   }
 }
