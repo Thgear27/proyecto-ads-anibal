@@ -27,13 +27,29 @@ $obra = isset($_POST['txtObra']) ? trim($_POST['txtObra']) : '';
 $moneda = isset($_POST['txtMoneda']) ? trim($_POST['txtMoneda']) : '';
 $productosArrayJson = isset($_POST['productsArray']) ? $_POST['productsArray'] : '';
 
-// Validación simple (puedes hacerla más completa)
+// Validación simple
 if ($nrRucDni === '' || $razonSocial === '' || $direccion === '' || $obra === '' || $moneda === '' || $productosArrayJson === '') {
   $mensajeError = 'Todos los campos son requeridos.';
   echo $mensajeError;
   exit();
 }
 
+// Decodificar el array de productos y validar que incluyan cantidades
+$productosArray = json_decode($productosArrayJson, true);
+if (!is_array($productosArray) || empty($productosArray)) {
+  $mensajeError = 'No se han seleccionado productos válidos.';
+  echo $mensajeError;
+  exit();
+}
+
+// Verificar que cada producto tenga una cantidad válida
+foreach ($productosArray as $producto) {
+  if (!isset($producto['id'], $producto['name'], $producto['price'], $producto['amount']) || $producto['amount'] <= 0) {
+    $mensajeError = 'Cada producto debe incluir una cantidad válida.';
+    echo $mensajeError;
+    exit();
+  }
+}
 
 if (validarBoton($_POST['btnSiguiente'])) {
   $control = new controlEmitirCotizacion();
@@ -43,8 +59,14 @@ if (validarBoton($_POST['btnSiguiente'])) {
     $direccion,
     $obra,
     $moneda,
-    $productosArrayJson
+    $productosArray
   );
 
-  header('Location: /moduloVentas/indexCotizacion.php?');
+  if ($resultado['success']) {
+    header('Location: /moduloVentas/indexCotizacion.php?message=' . urlencode($resultado['message']));
+    exit();
+  } else {
+    echo $resultado['message'];
+    exit();
+  }
 }

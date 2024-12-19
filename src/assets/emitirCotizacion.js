@@ -5,17 +5,11 @@ document.addEventListener("DOMContentLoaded", () => {
   nextButton.addEventListener("click", (event) => {
     event.preventDefault();
 
-    // Primero validamos el formulario usando la API de validación nativa de HTML5
     if (!form.checkValidity()) {
-      // Si no es válido, mostramos las advertencias de validación
       form.reportValidity();
-      return; // No continúa si no pasa la validación
+      return;
     }
 
-    // Crear un objeto FormData a partir del formulario
-    const formData = new FormData(form);
-
-    // Obtener todos los productos seleccionados (checkbox marcados)
     const selectedProducts = [];
     const productCheckboxes = document.querySelectorAll("[data-product-checkbox]:checked");
 
@@ -24,14 +18,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const productName = checkbox.getAttribute("data-product-name");
       const productPrice = checkbox.getAttribute("data-product-price");
 
+      const amountInput = document.querySelector(`[data-product-amount][data-product-id="${productId}"]`);
+
+      const productAmount = amountInput ? parseFloat(amountInput.value) || 0 : 0;
+
       selectedProducts.push({
         id: productId,
         name: productName,
-        price: productPrice,
+        price: parseFloat(productPrice),
+        amount: productAmount,
       });
     });
 
-    // Agregar el array de productos como un campo más en el Formulario (input hidden)
     const productsField = document.createElement("input");
     productsField.type = "hidden";
     productsField.name = "productsArray";
@@ -44,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     btnSiguienteField.value = "siguiente";
     form.appendChild(btnSiguienteField);
 
-    // Enviar el formulario
     form.submit();
   });
 });

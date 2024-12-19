@@ -125,6 +125,7 @@ class panelEmitirCotizacion extends pantalla
                 <th>Und</th>
                 <th>Venta</th>
                 <th>Compra</th>
+                <th>Cantidad</th>
                 <th>-</th>
               </tr>
             </thead>
@@ -138,6 +139,9 @@ class panelEmitirCotizacion extends pantalla
                     <td><?= $producto['Unidad']; ?></td>
                     <td><?= $producto['PrecioVenta']; ?></td>
                     <td><?= $producto['PrecioCompra']; ?></td>
+                    <td>
+                      <input type="number" data-product-amount data-product-id="<?= $producto['ID']; ?>" data-product-name="<?= $producto['NombreProducto']; ?>" data-product-price="<?= $producto['PrecioVenta']; ?>" class="add-product" />
+                    </td>
                     <td>
                       <input type="checkbox" data-product-checkbox data-product-id="<?= $producto['ID']; ?>" data-product-name="<?= $producto['NombreProducto']; ?>" data-product-price="<?= $producto['PrecioVenta']; ?>" class="add-product" />
                     </td>
