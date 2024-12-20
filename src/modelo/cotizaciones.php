@@ -5,15 +5,30 @@ class Cotizaciones
 {
   public function getCotizaciones($numerocotizacion = null, $fechadesde = null, $fechahasta = null)
   {
-    $sql = "SELECT ce.CotizacionEmitidaID,
-              ce.SerieComprobanteID,
-              ce.NumeroCorrelativo,
+    // $sql = "SELECT ce.CotizacionEmitidaID,
+    //           ce.SerieComprobanteID,
+    //           ce.NumeroCorrelativo,
+    //           cl.NombreCompletoORazonSocial AS Cliente,
+    //           ce.Obra,
+    //           ce.FechaEmision,
+    //           ce.ImporteTotal
+    //         FROM cotizacionemitida ce
+    //         INNER JOIN cliente cl ON ce.ClienteID = cl.ClienteID";
+
+    $sql = "SELECT 
+              ce.CotizacionEmitidaID,
+              sc.NumeroSerie, -- Se obtiene el número de serie de la tabla seriecomprobante
+              LPAD(ce.NumeroCorrelativo, 10, '0') AS NumeroCorrelativo,
               cl.NombreCompletoORazonSocial AS Cliente,
               ce.Obra,
               ce.FechaEmision,
               ce.ImporteTotal
-            FROM cotizacionemitida ce
-            INNER JOIN cliente cl ON ce.ClienteID = cl.ClienteID";
+            FROM 
+              cotizacionemitida ce
+            INNER JOIN 
+              cliente cl ON ce.ClienteID = cl.ClienteID
+            INNER JOIN 
+              seriecomprobante sc ON ce.SerieComprobanteID = sc.SerieComprobanteID;";
 
     $conditions = array();
 

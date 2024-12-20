@@ -70,7 +70,7 @@ class panelCotizacion extends pantalla
 
                 <?php foreach ($cotizaciones as $cotaizacion) : ?>
                   <tr>
-                    <td><?= $cotaizacion['SerieComprobanteID']; ?></td>
+                    <td><?= $cotaizacion['NumeroSerie']; ?></td>
                     <td><?= $cotaizacion['NumeroCorrelativo']; ?></td>
                     <td><?= $cotaizacion['Cliente']; ?></td>
                     <td><?= $cotaizacion['Obra']; ?></td>
