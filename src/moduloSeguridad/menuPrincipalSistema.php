@@ -72,7 +72,7 @@ class menuPrincipalSistema extends pantalla
             <?php
             }
             ?>
-            <li><a href='../index.php' style="color: red; text-decoration: none; display: block; padding: 8px;">Cerrar Sesión</a></li>
+            <li><a href='./cerrarSesion.php' style="color: red; text-decoration: none; display: block; padding: 8px;">Cerrar Sesión</a></li>
           </ul>
         </nav>
       </aside>
@@ -81,7 +81,7 @@ class menuPrincipalSistema extends pantalla
       <main style="flex: 1; padding: 20px; text-align: center;">
         <h1>Rol: <?= $rol ?></h1>
         <h1 style="color: #00695c;">Bienvenido, <?php echo htmlspecialchars($login); ?></h1>
-        <img src="../moduloSeguridad/logo.png" alt="Logo" style="width: 600px; margin-top: 20px;">
+        <img src="../assets/imagen/logo.png" alt="Logo" style="width: 600px; margin-top: 20px;">
       </main>
     </div>
 <?php

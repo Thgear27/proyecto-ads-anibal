@@ -1,5 +1,5 @@
 <?php
-include_once("formEditarProveedor.php");
+include_once("../moduloVentas/formEditarProveedor.php");    
 
 session_start();
 
@@ -25,7 +25,7 @@ $email = isset($_GET['email']) ? $_GET['email'] : null;
 $direccion = isset($_GET['direccion']) ? $_GET['direccion'] : null;
 
 // Validar si los parámetros existen
-if ($idProveedor === null) {
+if ($idProveedor === null || $razonSocial === null) {
     header('Location: /moduloVentas/indexProveedores.php');
     exit();
 }
@@ -33,3 +33,4 @@ if ($idProveedor === null) {
 // Cargar el formulario con los datos
 $formEditarProveedorObject = new formEditarProveedor();
 $formEditarProveedorObject->formEditarProveedorShow($idProveedor, $numeroRUC, $razonSocial, $telefono, $email, $direccion);
+?>

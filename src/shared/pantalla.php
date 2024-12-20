@@ -7,6 +7,7 @@ class pantalla
     <html>
 
     <head>
+      
       <!-- Import javasctipUrl -->
       <?php
       if ($javasctiptUrl != "") {

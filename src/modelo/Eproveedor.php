@@ -7,7 +7,8 @@ class Eproveedor
     {
         $conexion = Conexion::conectarBD(); // Conectar a la base de datos
 
-        $sql = "SELECT * FROM proveedor"; // Consulta para obtener todos los proveedores
+        // Modificación: solo obtener proveedores activos
+        $sql = "SELECT * FROM proveedor WHERE EstadoProveedor = 1"; // Consulta para obtener proveedores activos
         $resultado = $conexion->query($sql);
 
         $proveedores = [];
@@ -24,19 +25,27 @@ class Eproveedor
 
     public function actualizarProveedor($id, $numeroRUC, $razonSocial, $telefono, $email, $direccion)
     {
-        $conexion = Conexion::conectarBD(); // Llamar al método estático de conexión
+        $conexion = Conexion::conectarBD();
 
         $sql = "UPDATE proveedor SET 
-                NumeroRUC = '$numeroRUC', 
-                RazonSocial = '$razonSocial', 
-                Telefono = '$telefono', 
-                Email = '$email', 
-                Direccion = '$direccion'
-                WHERE ProveedorID = $id";
+                NumeroRUC = ?, 
+                RazonSocial = ?, 
+                Telefono = ?, 
+                Email = ?, 
+                Direccion = ?
+                WHERE ProveedorID = ?";
 
-        $resultado = $conexion->query($sql);
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("sssssi", $numeroRUC, $razonSocial, $telefono, $email, $direccion, $id);
 
-        Conexion::desConectarBD(); // Cerrar conexión
+        if ($stmt->execute()) {
+            $resultado = true; // Éxito en la consulta
+        } else {
+            $resultado = false; // Fallo en la consulta
+        }
+
+        $stmt->close();
+        Conexion::desConectarBD();
 
         return $resultado;
     }
@@ -55,5 +64,64 @@ class Eproveedor
         Conexion::desConectarBD(); // Cerrar conexión
 
         return $resultado->num_rows > 0;
+    }
+
+    public function eliminarProveedor($idProveedor)
+    {
+        $conexion = Conexion::conectarBD();
+        $sql = "UPDATE proveedor SET EstadoProveedor = 0 WHERE ProveedorID = ?";
+        $stmt = $conexion->prepare($sql);
+
+        if ($stmt) {
+            $stmt->bind_param("i", $idProveedor);
+            $resultado = $stmt->execute();
+            $stmt->close();
+            Conexion::desConectarBD();
+            return $resultado; // Devuelve true o false
+        } else {
+            die("Error en la preparación de la consulta: " . $conexion->error);
+        }
+    }
+    public function guardarProveedor($numeroRUC, $razonSocial, $telefono, $email, $direccion, $fechaRegistro, $estadoProveedor)
+    {
+        $conexion = Conexion::conectarBD(); // Conectar a la base de datos
+
+        $sql = "INSERT INTO proveedor (NumeroRUC, RazonSocial, Telefono, Email, Direccion, FechaRegistro, EstadoProveedor) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("ssssssi", $numeroRUC, $razonSocial, $telefono, $email, $direccion, $fechaRegistro, $estadoProveedor);
+
+        if ($stmt->execute()) {
+            $resultado = true; // Registro exitoso
+        } else {
+            $resultado = false; // Fallo al registrar
+        }
+
+        $stmt->close();
+        Conexion::desConectarBD(); // Cerrar conexión
+
+        return $resultado; // Devuelve true si fue exitoso, false si no
+    }
+
+    public function buscarProveedorPorRUC($numeroRUC)
+    {
+        $conexion = Conexion::conectarBD(); // Conectar a la base de datos
+
+        $sql = "SELECT * FROM proveedor WHERE NumeroRUC = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("s", $numeroRUC);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $proveedor = null;
+        if ($resultado->num_rows > 0) {
+            $proveedor = $resultado->fetch_assoc(); // Obtener el proveedor si existe
+        }
+
+        $stmt->close();
+        Conexion::desConectarBD(); // Cerrar conexión
+
+        return $proveedor; // Retorna el proveedor encontrado o null si no existe
     }
 }
