@@ -43,7 +43,7 @@ class pantalla
             ?>
               <li><a href="/moduloSeguridad/indexPanelPrincipal.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Menú</a></li>
               <li><a href="/moduloVentas/indexFactura.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Factura</a></li>
-              <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Boleta</a></li>
+              <li><a href="/moduloVentas/indexBoleta.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Boleta</a></li>
               <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Nota Credito</a></li>
               <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Compras</a></li>
 
@@ -65,9 +65,9 @@ class pantalla
             elseif ($rol === "jefeVentas") { // Verificar igualdad estricta
             ?>
               <li><a href="/moduloSeguridad/indexPanelPrincipal.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Menu</a></li>
-              <li><a href="../moduloVentas/indexCotizacion.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Cotizacion</a></li>
+              <li><a href="/moduloVentas/indexCotizacion.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Cotizacion</a></li>
               <li><a href="/moduloVentas/indexFactura.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Factura</a></li>
-              <li><a href="../moduloVentas/emitirBoleta.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Boleta</a></li>
+              <li><a href="/moduloVentas/indexBoleta.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Boleta</a></li>
               <li><a href="../moduloVentas/confirmarProductos.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Nota de Credito</a></li>
               <li>
                 <form method="post" action="../moduloVentas/getProducto.php" style="margin: 0;">

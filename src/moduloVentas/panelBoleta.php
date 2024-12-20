@@ -1,16 +1,16 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/shared/pantalla.php');
 
-class panelFactura extends pantalla
+class panelBoleta extends pantalla
 {
-  public function panelFacturaShow($facturas = null)
+  public function panelBoletaShow($boletas = null)
   {
     if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] != "SI") {
       header("Location: /");
       exit();
     }
 
-    $this->cabeceraShow("Facturación");
+    $this->cabeceraShow("Boletas");
 
     $rol = $_SESSION['rol'];
 ?>
@@ -21,25 +21,25 @@ class panelFactura extends pantalla
       ?>
 
       <main style="padding: 0 2rem;">
-        <h1 style="color: #00695c;">Facturas</h1>
-        
+        <h1 style="color: #00695c;">Boletas</h1>
+
         <div class="filters-container">
-          <a href="/moduloVentas/indexEmitirFactura.php" class="btn" style="margin-bottom: 1rem;">Emitir Factura</a>
+          <a href="/moduloVentas/indexEmitirBoleta.php" class="btn" style="margin-bottom: 1rem;">Emitir Boleta</a>
           <div class="flex">
             <h2>Filtros de Búsqueda</h2>
           </div>
           <div class="filters">
-            <!-- Primer filtro de nro de factura, un input text -->
-            <form action="/moduloVentas/getFactura.php" method="POST">
+            <!-- Primer filtro de nro de boleta, un input text -->
+            <form action="/moduloVentas/getBoleta.php" method="POST">
               <div class="input-container">
-                <label for="nroFactura">Nro. Factura:</label>
-                <input type="text" id="nroFactura" name="txtNroFactura">
+                <label for="nroBoleta">Nro. Boleta:</label>
+                <input type="text" id="nroBoleta" name="txtNroBoleta">
               </div>
-              <input style="margin-top: 10px;" type="submit" name="btnBuscarNroFactura" value="Buscar">
+              <input style="margin-top: 10px;" type="submit" name="btnBuscarNroBoleta" value="Buscar">
             </form>
 
             <!-- Segundo filtro de Fecha, dos inputs de "desde" "hasta" -->
-            <form action="/moduloVentas/getFactura.php" method="POST">
+            <form action="/moduloVentas/getBoleta.php" method="POST">
               <div class="input-container">
                 <label for="fechaDesde">Fecha desde:</label>
                 <input type="date" id="fechaDesde" name="txtFechaDesde">
@@ -51,7 +51,7 @@ class panelFactura extends pantalla
         </div>
 
         <div class="table-cotizaciones">
-          <table id="facturas-table">
+          <table id="boletas-table">
             <thead>
               <tr>
                 <th>Serie</th>
@@ -64,19 +64,19 @@ class panelFactura extends pantalla
               </tr>
             </thead>
             <tbody>
-              <?php if ($facturas !== null) : ?>
+              <?php if ($boletas !== null) : ?>
 
-                <?php foreach ($facturas as $factura) : ?>
+                <?php foreach ($boletas as $boleta) : ?>
                   <tr>
-                    <td><?= $factura['SerieComprobanteID']; ?></td>
-                    <td><?= $factura['NumeroCorrelativo']; ?></td>
-                    <td><?= $factura['Cliente']; ?></td>
-                    <td><?= $factura['Obra']; ?></td>
-                    <td><?= $factura['FechaEmision']; ?></td>
-                    <td><?= $factura['ImporteTotal']; ?></td>
+                    <td><?= $boleta['SerieComprobanteID']; ?></td>
+                    <td><?= $boleta['NumeroCorrelativo']; ?></td>
+                    <td><?= $boleta['Cliente']; ?></td>
+                    <td><?= $boleta['Obra']; ?></td>
+                    <td><?= $boleta['FechaEmision']; ?></td>
+                    <td><?= $boleta['ImporteTotal']; ?></td>
                     <td>
-                      <form action="/moduloVentas/getFactura.php" method="POST">
-                        <input type="hidden" name="txtIDFactura" value="<?= $factura['FacturaEmitidaID']; ?>">
+                      <form action="/moduloVentas/getBoleta.php" method="POST">
+                        <input type="hidden" name="txtIDBoleta" value="<?= $boleta['BoletaEmitidaID']; ?>">
                         <input type="submit" name="btnGenerarPdf" value="Descargar PDF">
                       </form>
                     </td>
@@ -85,7 +85,7 @@ class panelFactura extends pantalla
 
               <?php else : ?>
                 <tr>
-                  <td colspan="7">No se encontraron facturas.</td>
+                  <td colspan="7">No se encontraron boletas.</td>
                 </tr>
               <?php endif; ?>
             </tbody>
@@ -97,3 +97,4 @@ class panelFactura extends pantalla
     $this->pieShow();
   }
 }
+?>

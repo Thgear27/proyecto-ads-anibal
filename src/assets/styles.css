@@ -123,6 +123,22 @@ main h1 {
   font-weight: normal;
 }
 
+.table-cotizaciones input[type="submit"] {
+  background: #00695c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.table-cotizaciones input[type="submit"]:hover {
+  background: #004d40; /* Más oscuro para hover */
+}
+
 .table-cotizaciones tbody td {
   padding: 1rem;
   border-bottom: 1px solid #ddd;
