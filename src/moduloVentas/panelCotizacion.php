@@ -10,7 +10,7 @@ class panelCotizacion extends pantalla
       exit();
     }
 
-    $this->cabeceraShow("Cotazación");
+    $this->cabeceraShow("Cotización");
 
     $rol = $_SESSION['rol'];
     $login = $_SESSION['login'];
@@ -58,7 +58,7 @@ class panelCotizacion extends pantalla
               <li><a href="../moduloVentas/emitirBoleta.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Proveedores</a></li>
               <li><a href="../moduloVentas/confirmarProductos.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Reporte</a></li>
               <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Compras</a></li>
-              <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Usuarios</a></li>
+              <li><a href="../moduloSeguridad/indexGestionarUsuarios.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Usuarios</a></li>
             <?php
             }
 

@@ -1,16 +1,16 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/shared/pantalla.php');
 
-class panelEmitirCotizacion extends pantalla
+class formAgregarUsuario extends pantalla
 {
-  public function panelEmitirCotizacionShow($productos = null)
+    public function formAgregarUsuarioShow()
   {
     if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] != "SI") {
       header("Location: /");
       exit();
     }
 
-    $this->cabeceraShow("Cotazación", "/assets/emitirCotizacion.js");
+    $this->cabeceraShow("Usuario", "/assets/emitirCotizacion.js");
 
     $rol = $_SESSION['rol'];
     $login = $_SESSION['login'];
@@ -76,87 +76,81 @@ class panelEmitirCotizacion extends pantalla
         </nav>
       </aside>
 
-      <!-- Contenido principal -->
-      <main style="padding: 4rem 2rem;">
-        <h1>Emisión de Cotización</h1>
-        <h2>Información del comprador:</h2>
-        <form action="/moduloVentas/getEmitirCotizacion.php" method="POST" class="emitir-cotizacion" id="emitir-cotizacion-form">
-          <div class="input-container">
-            <label>Nro de RUC / DNI:</label>
-            <input type="text" id="nrRucDni" name="txtNrRucDni" required>
-          </div>
+      <main style="padding: 4rem 2rem; width: 50%; margin: auto;">
+          <h1>Agregar Usuario</h1>
+          <form action="/moduloSeguridad/getGestionarUsuario.php" method="POST" id="usuario-form">
+            <input type="hidden" name="accion" value="agregar">
 
-          <div class="input-container">
-            <label>Razón Social:</label>
-            <input type="text" id="razonSocial" name="txtRazonSocial" required>
-          </div>
+            <div class="input-container" style="margin-bottom: 1rem;">
+              <label for="usuario">Nombre de usuario:</label>
+              <input type="text" id="usuario" name="usuario" required minlength="5" placeholder="Ingrese el nombre de usuario" style="display: block; width: 100%; padding: 0.5rem;">
+              <small style="color: #007BFF;">Más de 5 caracteres</small>
+            </div>
 
-          <div class="input-container">
-            <label>Dirección: </label>
-            <input type="text" id="direccion" name="txtDireccion" required>
-          </div>
+            <div class="input-container" style="margin-bottom: 1rem;">
+              <label for="contrasena">Contraseña:</label>
+              <input type="text" id="contrasena" name="contrasena" required minlength="8" placeholder="Ingrese la contraseña" style="display: block; width: 100%; padding: 0.5rem;">
+              <small style="color: #007BFF;">Obligatorio 8 caracteres</small>
+            </div>
 
-          <div class="input-container">
-            <label>Obra: </label>
-            <input type="text" id="obra" name="txtObra" required>
-          </div>
+            <div class="input-container" style="margin-bottom: 1rem;">
+              <label for="nombres">Nombres:</label>
+              <input type="text" id="nombres" name="nombres" required minlength="2" placeholder="Ingrese los nombres" style="display: block; width: 100%; padding: 0.5rem;">
+              <small style="color: #007BFF;">Más de 2 caracteres</small>
+            </div>
 
-          <div class="input-container">
-            <span>Moneda:</span>
-            <label>
-              <input type="radio" name="txtMoneda" value="PEN" checked>
-              Soles (PEN)
-            </label>
-            <label>
-              <input type="radio" name="txtMoneda" value="USD">
-              Dólares (USD)
-            </label>
-          </div>
-          <input type="hidden" name="productsArray" id="productsArrayInput">
-          <input type="hidden" name="btnSiguiente" value="Siguiente">
-        </form>
-        <h2>Información de los productos:</h2>
-        <div class="table-cotizaciones">
-          <table id="cotaizaciones-table">
-            <thead>
-              <tr>
-                <th>Nro</th>
-                <th>Producto</th>
-                <th>Und</th>
-                <th>Venta</th>
-                <th>Compra</th>
-                <th>-</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php if ($productos !== null) : ?>
+            <div class="input-container" style="margin-bottom: 1rem;">
+              <label for="apellidos">Apellidos:</label>
+              <input type="text" id="apellidos" name="apellidos" required minlength="4" placeholder="Ingrese los apellidos" style="display: block; width: 100%; padding: 0.5rem;">
+              <small style="color: #007BFF;">Más de 4 caracteres</small>
+            </div>
 
-                <?php foreach ($productos as $producto) : ?>
-                  <tr>
-                    <td><?= $producto['ID']; ?></td>
-                    <td><?= $producto['NombreProducto']; ?></td>
-                    <td><?= $producto['Unidad']; ?></td>
-                    <td><?= $producto['PrecioVenta']; ?></td>
-                    <td><?= $producto['PrecioCompra']; ?></td>
-                    <td>
-                      <input type="checkbox" data-product-checkbox data-product-id="<?= $producto['ID']; ?>" data-product-name="<?= $producto['NombreProducto']; ?>" data-product-price="<?= $producto['PrecioVenta']; ?>" class="add-product" />
-                    </td>
-                  </tr>
-                <?php endforeach; ?>
+            <div class="input-container" style="margin-bottom: 1rem;">
+              <label for="telefono">Teléfono:</label>
+              <input type="text" id="telefono" name="telefono" required minlength="9" maxlength="9" placeholder="Ingrese el teléfono" style="display: block; width: 100%; padding: 0.5rem;">
+              <small style="color: #007BFF;">Obligatoriamente 9 dígitos</small>
+            </div>
 
-              <?php else : ?>
-                <tr>
-                  <td colspan="6">No se encontraron solicitudes.</td>
-                </tr>
-              <?php endif; ?>
-            </tbody>
-          </table>
-        </div>
-        <button style="width: 100%; font-size: 1.2rem; margin-top: 1rem;" class="btn" id="btnSiguiente">Siguiente</button>
-      </main>
+            <div class="input-container" style="margin-bottom: 1rem;">
+              <label for="correo">Correo:</label>
+              <input type="email" id="correo" name="correo" required placeholder="Ingrese el correo" style="display: block; width: 100%; padding: 0.5rem;">
+              <small style="color: #007BFF;">Debe tener formato de correo electrónico</small>
+            </div>
+
+            <div class="input-container" style="margin-bottom: 1rem;">
+              <label for="dni">DNI:</label>
+              <input type="text" id="dni" name="dni" required minlength="8" maxlength="8" placeholder="Ingrese el DNI" style="display: block; width: 100%; padding: 0.5rem;">
+              <small style="color: #007BFF;">Obligatoriamente 8 dígitos</small>
+            </div>
+
+            <div class="input-container" style="margin-bottom: 1rem;">
+              <label for="respuesta-secreta">Respuesta secreta:</label>
+              <input type="text" id="respuesta-secreta" name="respuesta-secreta" required minlength="2" placeholder="Ingrese la respuesta secreta" style="display: block; width: 100%; padding: 0.5rem;">
+              <small style="color: #007BFF;">Más de 2 caracteres</small>
+            </div>
+
+            <div class="input-container" style="margin-bottom: 1rem;">
+              <label>Rol:</label>
+              <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                <label>
+                  <input type="radio" name="rolid" value="1" required> Jefe de Ventas
+                </label>
+                <label>
+                  <input type="radio" name="rolid" value="2" required> Vendedor
+                </label>
+                <label>
+                  <input type="radio" name="rolid" value="3" required> Cajero
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" style="width: 100%; font-size: 1.2rem; margin-top: 1rem; background-color: #28a745; color: white; border: none; padding: 0.75rem; border-radius: 4px;">Agregar Usuario</button>
+          </form>
+        </main>
+
+
     </div>
 <?php
     $this->pieShow();
   }
 }
-?>
