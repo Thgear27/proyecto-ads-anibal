@@ -11,7 +11,9 @@ function validarTexto($txtLogin,$txtPassword)
         return 0;    
 }
 
-if(validarBoton($_POST['btnAceptar']))
+$btnAceptar = $_POST['btnAceptar'] ?? null;
+
+if(validarBoton($btnAceptar))
 {
     if(validarTexto($_POST['txtLogin'],$_POST['txtPassword']))
     {

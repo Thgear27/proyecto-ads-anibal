@@ -28,5 +28,10 @@ RUN composer require phpmailer/phpmailer
 # Install TCPDF using Composer
 RUN composer require tecnickcom/tcpdf
 
+# Configure Apache logs directory and permissions
+RUN mkdir -p /var/log/apache2 && \
+    chown -R www-data:www-data /var/log/apache2 && \
+    chmod -R 750 /var/log/apache2
+
 # Expose port 80
 EXPOSE 80
