@@ -10,7 +10,7 @@ class panelCotizacion extends pantalla
       exit();
     }
 
-    $this->cabeceraShow("Cotizacion");
+    $this->cabeceraShow("Cotización");
 
     $rol = $_SESSION['rol'];
     $login = $_SESSION['login'];

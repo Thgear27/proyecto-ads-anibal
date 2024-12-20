@@ -79,7 +79,7 @@ class pantalla
               </li>
               <li><a href="/moduloVentas/indexProveedores.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Proveedores</a></li>
               <li><a href="../moduloVentas/indexReporteventas.php " style="color: white; text-decoration: none; display: block; padding: 8px;">Reporte Ventas</a></li>
-              <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Usuarios</a></li>
+              <li><a href="/moduloSeguridad/indexGestionarUsuarios.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Usuarios</a></li>
             <?php
             }
 
