@@ -18,7 +18,7 @@ class Cotizaciones
     $sql = "SELECT 
               ce.CotizacionEmitidaID,
               sc.NumeroSerie, -- Se obtiene el número de serie de la tabla seriecomprobante
-              ce.NumeroCorrelativo,
+              LPAD(ce.NumeroCorrelativo, 10, '0') AS NumeroCorrelativo,
               cl.NombreCompletoORazonSocial AS Cliente,
               ce.Obra,
               ce.FechaEmision,
