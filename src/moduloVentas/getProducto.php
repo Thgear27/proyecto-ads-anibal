@@ -6,11 +6,14 @@ session_start();
 
 $mensajeError = '';
 
-$rol = $_SESSION['rol'];
+$rol = $_SESSION['rol'] ?? null;
 
 // Si el rol no es "vendedor" o "jefeVentas", redirigir al panel principal
-if ($rol != "vendedor" && $rol != "jefeVentas") {
+if ($rol != "vendedor" && $rol != "jefeVentas" && $rol != null) {
   header('Location: /moduloSeguridad/indexPanelPrincipal.php');
+  exit();
+} else if ($rol == null) {
+  header('Location: /moduloSeguridad/getUsuario.php');
   exit();
 }
 

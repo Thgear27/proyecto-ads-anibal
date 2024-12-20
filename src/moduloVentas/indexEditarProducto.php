@@ -6,7 +6,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/modelo/productos.php');
 session_start();
 
 if (!isset($_SESSION['autenticado'])) {
-  header('Location: /');
+  header('Location: /moduloSeguridad/getUsuario.php');
   exit();
 }
 
