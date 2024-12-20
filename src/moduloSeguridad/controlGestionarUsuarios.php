@@ -29,17 +29,44 @@ class controlGestionarUsuarios
 
     public function actualizarUsuario($txtNombreUsuario, $txtContrasena, $txtNombres, $txtApellidos, $txtTelefono, $txtEmail, $txtDni, $txtRespuestaSecreta, $txtRolId, $txtUsuarioId)
     {
-    $UsuarioObject = new Usuario();
-    $resultado = $UsuarioObject->actualizarUsuario($txtNombreUsuario, $txtContrasena, $txtNombres, $txtApellidos, $txtTelefono, $txtEmail, $txtDni, $txtRespuestaSecreta, $txtRolId, $txtUsuarioId);
+        $UsuarioObject = new Usuario();
+        $resultado = $UsuarioObject->actualizarUsuario($txtNombreUsuario, $txtContrasena, $txtNombres, $txtApellidos, $txtTelefono, $txtEmail, $txtDni, $txtRespuestaSecreta, $txtRolId, $txtUsuarioId);
 
-    if ($resultado) {
-
-        $screenMensajeSistemaObject = new screenMensajeSistema();
-        $screenMensajeSistemaObject->screenMensajeSistemaShow('Los datos del usuario han sido editados correctamente', "<a href='/moduloSeguridad/indexGestionarUsuarios.php'>Regresar al panel anterior</a>");
-    } else {
-
-        $screenMensajeSistemaObject = new screenMensajeSistema();
-        $screenMensajeSistemaObject->screenMensajeSistemaShow('error', 'Error', 'No se ha podido editar el producto', "<a href='/moduloSeguridad/indexGestionarUsuarios.php'>Regresar al panel anterior</a>");
+        if ($resultado) {
+            $screenMensajeSistemaObject = new screenMensajeSistema();
+            $screenMensajeSistemaObject->screenMensajeSistemaShow(
+                'Los datos del usuario han sido editados correctamente',
+                "<a href='/moduloSeguridad/indexGestionarUsuarios.php'>Regresar al panel anterior</a>"
+            );
+        } else {
+            $screenMensajeSistemaObject = new screenMensajeSistema();
+            $screenMensajeSistemaObject->screenMensajeSistemaShow(
+                'Error al editar el usuario',
+                "<a href='/moduloSeguridad/indexGestionarUsuarios.php'>Regresar al panel anterior</a>"
+            );
+        }
     }
+
+    public function agregarUsuario($txtNombreUsuario, $txtContrasena, $txtNombres, $txtApellidos, $txtTelefono, $txtEmail, $txtDni, $txtRespuestaSecreta, $txtRolId)
+    {
+        // Instanciar el modelo
+        $usuarioObject = new Usuario();
+        // Intentar agregar el usuario
+        $resultado = $usuarioObject->agregarUsuario($txtNombreUsuario, $txtContrasena, $txtNombres, $txtApellidos, $txtTelefono, $txtEmail, $txtDni, $txtRespuestaSecreta, $txtRolId);
+        if ($resultado) {
+            // Si el usuario se agregó correctamente
+            $screenMensajeSistemaObject = new screenMensajeSistema();
+            $screenMensajeSistemaObject->screenMensajeSistemaShow(
+                'El usuario ha sido agregado correctamente',
+                "<a href='/moduloSeguridad/indexGestionarUsuarios.php'>Regresar al panel anterior</a>"
+            );
+        } else {
+            // Error en la lógica de agregar
+            $screenMensajeSistemaObject = new screenMensajeSistema();
+            $screenMensajeSistemaObject->screenMensajeSistemaShow(
+                'Error al agregar el usuario',
+                "<a href='/moduloSeguridad/indexGestionarUsuarios.php'>Regresar al panel anterior</a>"
+            );
+        }
     }
 }

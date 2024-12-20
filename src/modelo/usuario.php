@@ -241,5 +241,56 @@ public function actualizarUsuario($nombreUsuario, $contrasena, $nombres, $apelli
     }
 }
 
+public function agregarUsuario($nombreUsuario, $contrasena, $nombres, $apellidos, $telefono, $email, $dni, $respuestaSecreta, $rolId)
+{
+    // Consulta SQL con marcadores de posición para evitar inyección SQL
+    $sql = "INSERT INTO usuario (
+        NombreUsuario, 
+        Contraseña, 
+        Nombres, 
+        Apellidos, 
+        Email, 
+        Telefono, 
+        DNI, 
+        RespuestaSecreta, 
+        FechaCreacion, 
+        EstadoUsuario, 
+        RolID
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURDATE(), 1, ?)";
+
+    // Establecer conexión a la base de datos
+    $conexion = Conexion::conectarBD();
+
+    // Preparar la consulta
+    $stmt = $conexion->prepare($sql);
+    if (!$stmt) {
+        die("Error al preparar la consulta: " . $conexion->error);
+    }
+
+    // Asociar los parámetros a la consulta
+    $stmt->bind_param(
+        "ssssssssi", 
+        $nombreUsuario, 
+        $contrasena, 
+        $nombres, 
+        $apellidos, 
+        $email, 
+        $telefono, 
+        $dni, 
+        $respuestaSecreta, 
+        $rolId
+    );
+
+    // Ejecutar la consulta
+    $resultado = $stmt->execute();
+
+    // Cerrar la consulta y la conexión
+    $stmt->close();
+    Conexion::desConectarBD();
+
+    // Retornar el resultado de la ejecución
+    return $resultado; // Retorna true si la inserción fue exitosa, false si falló
+}
+
 
 }

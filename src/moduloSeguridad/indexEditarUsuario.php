@@ -29,7 +29,7 @@ $respuestasecreta = $_GET['respuestasecreta'];
 $rolid = $_GET['rolid'];
 
 if ($usuarioid === null || $nombreusuario === null) {
-  header('Location: /moduloSeguridad/indexGestionUsuarios.php');
+  header('Location: /moduloSeguridad/indexGestionarUsuarios.php');
   exit();
 }
 

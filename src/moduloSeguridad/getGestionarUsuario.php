@@ -73,10 +73,51 @@ function validarCamposEditarUsuario($txtUsuario, $txtClave, $txtNombres, $txtApe
 }
 
 // Procesar la solicitud POST
+// Procesar la solicitud POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accion = $_POST['accion'] ?? null;
 
-    if ($accion === 'editar') {
+    // Acción para agregar un usuario
+    if ($accion === 'agregar') {
+        // Captura de datos del formulario de agregar usuario
+        $txtNombreUsuario = trim($_POST['nombreusuario']);
+        $txtContrasena = trim($_POST['contrasena']);
+        $txtNombres = trim($_POST['nombres']);
+        $txtApellidos = trim($_POST['apellidos']);
+        $txtTelefono = trim($_POST['telefono']);
+        $txtEmail = trim($_POST['email']);
+        $txtDni = trim($_POST['dni']);
+        $txtRespuestaSecreta = trim($_POST['respuestasecreta']);
+        $txtRolId = trim($_POST['rolid']);
+
+        // Validar los campos
+        if (validarCamposEditarUsuario($txtNombreUsuario, $txtContrasena, $txtNombres, $txtApellidos, $txtEmail, $txtTelefono, $txtDni, $txtRespuestaSecreta, $txtRolId)) {
+            // Crear el nuevo usuario
+            $controlGestionarUsuariosObject = new controlGestionarUsuarios();
+            $controlGestionarUsuariosObject->agregarUsuario($txtNombreUsuario, $txtContrasena, $txtNombres, $txtApellidos, $txtTelefono, $txtEmail, $txtDni, $txtRespuestaSecreta, $txtRolId);
+        } else {
+            // Redirigir a la página con los mensajes de error
+            $formAgregarUsuarioUrl = "/moduloSeguridad/indexAgregarUsuario.php?" . http_build_query([
+                'nombreusuario' => $txtNombreUsuario,
+                'contrasena' => $txtContrasena,
+                'nombres' => $txtNombres,
+                'apellidos' => $txtApellidos,
+                'telefono' => $txtTelefono,
+                'email' => $txtEmail,
+                'dni' => $txtDni,
+                'respuestasecreta' => $txtRespuestaSecreta,
+                'rolid' => $txtRolId,
+            ]);
+        
+            $screenMensajeSistemaObject = new screenMensajeSistema();
+            $screenMensajeSistemaObject->screenMensajeSistemaShow(
+                $mensajeError . "<script>setTimeout(function(){ window.location.href = '$formAgregarUsuarioUrl'; }, 5000);</script>",
+                "<a href='$formAgregarUsuarioUrl'>Volver al formulario de agregar</a>"
+            );
+        }
+
+    } elseif ($accion === 'editar') {
+        // Código para editar usuario existente
         $txtUsuarioId = trim($_POST['usuarioid']);
         $txtNombreUsuario = trim($_POST['nombreusuario']);
         $txtContrasena = trim($_POST['contrasena']);
@@ -111,8 +152,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "<a href='$formEditarUsuarioUrl'>Volver al formulario de edición</a>"
             );
         }
-        
     } elseif ($accion === 'eliminar') {
+        // Código para eliminar usuario
         if (isset($_POST['id']) && is_numeric($_POST['id'])) {
             $id = intval($_POST['id']);
             $controlGestionarUsuariosObject = new controlGestionarUsuarios();
