@@ -41,6 +41,13 @@ class controlEmitirCotizacion
     $moneda = $cotizacion['Moneda'];
     $importeTotal = $cotizacion['ImporteTotal'];
 
+    $costoSinIgv = 0;
+
+    foreach ($cotizacion['Detalles'] as $detalle) {
+      $totalLinea = $detalle['Total'];
+      $costoSinIgv += $totalLinea;
+    }
+
     // Armado del HTML para el PDF (una sola cotización)
     $html = '
         <!DOCTYPE html>
@@ -107,7 +114,7 @@ class controlEmitirCotizacion
                     <td>' . $obra . '</td>
                     <td>' . $fechaEmision . '</td>
                     <td>' . $moneda . '</td>
-                    <td>S/. ' . number_format($importeTotal, 2) . '</td>
+                    <td>S/. ' . number_format($costoSinIgv, 2) . '</td>
                 </tr>
             </tbody>
         </table>';
@@ -175,27 +182,19 @@ class controlEmitirCotizacion
     $direccion,
     $obra,
     $moneda,
-    $productosArrayJson
+    $productosArray
   ) {
-    // Decodificar el JSON de productos
-    $productosArray = json_decode($productosArrayJson, true);
-    if (!is_array($productosArray) || empty($productosArray)) {
-      $mensajeError = 'No se han seleccionado productos válidos.';
-      echo $mensajeError;
-      exit();
-    }
-
     // Crear instancia del modelo
     $cotizacionesModel = new Cotizaciones();
 
-    // Parámetros de ejemplo (ajustar según lógica real)
+    // Parámetros de ejemplo
     $usuarioID = 1;
     $serieComprobanteID = 1;
 
-    // Calcular totales de forma básica
+    // Calcular totales
     $opGravada = 0;
     foreach ($productosArray as $prod) {
-      $opGravada += floatval($prod['price']);
+      $opGravada += floatval($prod['price']) * intval($prod['amount']);
     }
 
     $totalIGV = $opGravada * 0.18;

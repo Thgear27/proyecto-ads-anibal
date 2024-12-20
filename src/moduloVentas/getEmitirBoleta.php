@@ -1,6 +1,6 @@
 <?php
-include_once($_SERVER['DOCUMENT_ROOT'] . '/modelo/cotizaciones.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/moduloVentas/controlEmitirCotizacion.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/modelo/boletas.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/moduloVentas/controlEmitirBoleta.php');
 
 session_start();
 
@@ -12,11 +12,6 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : '';
 if ($rol != "vendedor" && $rol != "jefeVentas") {
   header('Location: /moduloSeguridad/indexPanelPrincipal.php');
   exit();
-}
-
-function validarBoton($btnbuscar)
-{
-  return isset($btnbuscar);
 }
 
 // Validar datos recibidos
@@ -34,7 +29,7 @@ if ($nrRucDni === '' || $razonSocial === '' || $direccion === '' || $obra === ''
   exit();
 }
 
-// Decodificar el array de productos y validar que incluyan cantidades
+// Decodificar el array de productos
 $productosArray = json_decode($productosArrayJson, true);
 if (!is_array($productosArray) || empty($productosArray)) {
   $mensajeError = 'No se han seleccionado productos válidos.';
@@ -42,7 +37,7 @@ if (!is_array($productosArray) || empty($productosArray)) {
   exit();
 }
 
-// Verificar que cada producto tenga una cantidad válida
+// Verificar cantidades válidas
 foreach ($productosArray as $producto) {
   if (!isset($producto['id'], $producto['name'], $producto['price'], $producto['amount']) || $producto['amount'] <= 0) {
     $mensajeError = 'Cada producto debe incluir una cantidad válida.';
@@ -51,9 +46,9 @@ foreach ($productosArray as $producto) {
   }
 }
 
-if (validarBoton($_POST['btnSiguiente'])) {
-  $control = new controlEmitirCotizacion();
-  $resultado = $control->guardarNuevaCotizacion(
+if (isset($_POST['btnSiguiente'])) {
+  $control = new controlEmitirBoleta();
+  $resultado = $control->guardarNuevaBoleta(
     $nrRucDni,
     $razonSocial,
     $direccion,
@@ -63,7 +58,7 @@ if (validarBoton($_POST['btnSiguiente'])) {
   );
 
   if ($resultado['success']) {
-    header('Location: /moduloVentas/indexCotizacion.php?message=' . urlencode($resultado['message']));
+    header('Location: /moduloVentas/indexBoleta.php?message=' . urlencode($resultado['message']));
     exit();
   } else {
     echo $resultado['message'];

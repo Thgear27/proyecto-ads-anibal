@@ -104,12 +104,18 @@ class Cotizaciones
   ) {
     $conexion = Conexion::conectarBD();
 
-    // Primero, obtenemos el último NumeroCorrelativo de la serie para incrementarlo
+    // Obtener el último correlativo
     $sqlMax = "SELECT IFNULL(MAX(NumeroCorrelativo), 0) as maxCorr FROM cotizacionemitida WHERE SerieComprobanteID = $serieComprobanteID";
     $respuestaMax = $conexion->query($sqlMax);
+
+    if (!$respuestaMax) {
+      die("Error al obtener el último correlativo: " . $conexion->error);
+    }
+
     $filaMax = $respuestaMax->fetch_assoc();
     $numeroCorrelativo = $filaMax['maxCorr'] + 1;
 
+    // Insertar cotización principal
     $sqlInsert = "INSERT INTO cotizacionemitida 
     (SerieComprobanteID, NumeroCorrelativo, UsuarioID, FechaEmision, FechaVencimiento, TipoPago, FormaPago, Moneda, ClienteID, `Op.Inafecta`, `Op.Exonerada`, `Op.Gratuita`, `Op.Gravada`, TotalIGV, DescuentoGlobal, ImporteTotal, Observaciones, Obra)
     VALUES
@@ -121,23 +127,29 @@ class Cotizaciones
 
     $cotizacionID = $conexion->insert_id;
 
+    if (!$cotizacionID) {
+      die("No se pudo obtener el ID de la cotización recién insertada.");
+    }
+
     // Insertar detalles
     foreach ($productosArray as $prod) {
       $productoID = (int)$prod['id'];
-      $cantidad = 1; // suposición
-      $precioVenta = (float)$prod['price'];
-      $valorUnitarioVenta = $precioVenta; // Podrías ajustar según tu lógica
-      $descuento = 0; // Suposición
+      $cantidad = intval($prod['amount']);
+      $precioVenta = floatval($prod['price']);
+      $valorUnitarioVenta = $precioVenta;
+      $descuento = 0;
       $total = $precioVenta * $cantidad;
 
-      $sqlDet = "INSERT INTO cotizacionemitidadetalles
-      (CotizacionEmitidaID, ProductoDetallesID, Cantidad, PrecioUnitarioVenta, ValorUnitarioVenta, Descuento, Total)
-      VALUES
-      ($cotizacionID, $productoID, $cantidad, $precioVenta, $valorUnitarioVenta, $descuento, $total)";
-
-      if (!$conexion->query($sqlDet)) {
-        die("Error al insertar detalle de cotización: " . $conexion->error);
-      }
+      // Llamar al método para guardar detalles
+      $this->guardarDetalleCotizacion(
+        $cotizacionID,
+        $productoID,
+        $cantidad,
+        $precioVenta,
+        $total,
+        $valorUnitarioVenta,
+        $descuento
+      );
     }
 
     Conexion::desConectarBD();
@@ -252,5 +264,22 @@ class Cotizaciones
 
     Conexion::desConectarBD();
     return $cotizaciones;
+  }
+
+  public function guardarDetalleCotizacion($cotizacionID, $productoID, $cantidad, $precioUnitario, $total, $valorUnitarioVenta, $descuento)
+  {
+    $conexion = Conexion::conectarBD();
+
+    // Preparar la consulta SQL para insertar el detalle
+    $sqlDet = "INSERT INTO cotizacionemitidadetalles 
+               (CotizacionEmitidaID, ProductoDetallesID, Cantidad, PrecioUnitarioVenta, Total, ValorUnitarioVenta, Descuento)
+               VALUES 
+               ($cotizacionID, $productoID, $cantidad, $precioUnitario, $total, $valorUnitarioVenta, $descuento)";
+
+    if (!$conexion->query($sqlDet)) {
+      die("Error al insertar detalle de cotización: " . $conexion->error);
+    }
+
+    Conexion::desConectarBD();
   }
 }
