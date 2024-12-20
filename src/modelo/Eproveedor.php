@@ -124,4 +124,19 @@ class Eproveedor
 
         return $proveedor; // Retorna el proveedor encontrado o null si no existe
     }
+    public function obtenerProveedorPorID($idProveedor)
+    {
+        $conexion = Conexion::conectarBD();
+        $sql = "SELECT * FROM proveedor WHERE ProveedorID = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("i", $idProveedor);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        if ($resultado->num_rows > 0) {
+            return $resultado->fetch_assoc();
+        } else {
+            return null;
+        }
+    }
 }

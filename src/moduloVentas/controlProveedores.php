@@ -68,6 +68,9 @@ class controlProveedores
         return $modeloProveedor->verificarProveedorPorRUC($numeroRUC, $idProveedor);
     }
 
+
+
+
     public function eliminarProveedor($idProveedor)
     {
         $modeloProveedor = new Eproveedor();
@@ -88,26 +91,49 @@ class controlProveedores
             );
         }
     }
+
+    public function confirmarEliminacion($idProveedor)
+    {
+        $modeloProveedor = new Eproveedor();
+        $proveedor = $modeloProveedor->obtenerProveedorPorID($idProveedor); // Método que debe existir en Eproveedor
+
+        if ($proveedor) {
+            $this->screenMensajeSistema->screenMensajeSistemaShow(
+                "Advertencia",
+                "¿Estás seguro de que deseas eliminar este proveedor?",
+                "<form action='/moduloVentas/getProveedor.php' method='POST'>
+                <input type='hidden' name='accion' value='confirmarEliminar'>
+                <input type='hidden' name='idProveedor' value='$idProveedor'>
+                <button type='submit' style='background-color: red; color: white; padding: 10px; border: none; cursor: pointer;'>Sí, eliminar</button>
+                <a href='/moduloVentas/indexProveedores.php' style='padding: 10px; background-color: green; color: white; text-decoration: none;'>Cancelar</a>
+             </form>"
+            );
+        } else {
+            $this->screenMensajeSistema->screenMensajeSistemaShow(
+                "Error",
+                "El proveedor no existe.",
+                "<a href='/moduloVentas/indexProveedores.php'>Regresar al panel principal</a>"
+            );
+        }
+    }
+
     public function registrarProveedor($numeroRUC, $razonSocial, $telefono, $email, $direccion, $fechaRegistro, $estadoProveedor)
     {
         $modeloProveedor = new Eproveedor();
-    
+
         // Verificar si el proveedor ya existe con el mismo RUC
         if ($modeloProveedor->verificarProveedorPorRUC($numeroRUC)) {
-            $formRegistrarProveedores = new formRegistrarProveedores();
-            $formRegistrarProveedores->formRegistrarProveedoresShow();
-    
             $this->screenMensajeSistema->screenMensajeSistemaShow(
                 "Error",
-                "Error",
-                "Ya existe un proveedor registrado con el mismo RUC."
+                "Registro fallido",
+                "Ya existe un proveedor registrado con el mismo RUC. <a href='/moduloVentas/indexAgregarProveedor.php'>Regresar al formulario de registro</a>"
             );
             return;
         }
-    
+
         // Guardar proveedor
         $resultado = $modeloProveedor->guardarProveedor($numeroRUC, $razonSocial, $telefono, $email, $direccion, $fechaRegistro, $estadoProveedor);
-    
+
         if ($resultado) {
             $this->screenMensajeSistema->screenMensajeSistemaShow(
                 "Éxito",
@@ -117,7 +143,7 @@ class controlProveedores
         } else {
             $formRegistrarProveedores = new formRegistrarProveedores();
             $formRegistrarProveedores->formRegistrarProveedoresShow();
-    
+
             $this->screenMensajeSistema->screenMensajeSistemaShow(
                 "Error",
                 "Error",
@@ -125,5 +151,4 @@ class controlProveedores
             );
         }
     }
-    
 }
