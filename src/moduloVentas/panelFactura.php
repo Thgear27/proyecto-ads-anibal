@@ -1,47 +1,45 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/shared/pantalla.php');
 
-class panelCotizacion extends pantalla
+class panelFactura extends pantalla
 {
-  public function panelCotizacionShow($cotizaciones = null)
+  public function panelFacturaShow($facturas = null)
   {
     if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] != "SI") {
       header("Location: /");
       exit();
     }
 
-    $this->cabeceraShow("Cotización");
+    $this->cabeceraShow("Facturación");
 
     $rol = $_SESSION['rol'];
-    $login = $_SESSION['login'];
 ?>
-    <!-- Contenedor principal -->
     <div style="display: flex; height: 100vh;">
       <!-- Menú lateral -->
       <?php
       $this->menuShow($rol);
       ?>
 
-      <!-- Contenido principal -->
       <main style="padding: 0 2rem;">
-        <h1 style="color: #00695c;">Cotizaciones</h1>
+        <h1 style="color: #00695c;">Facturas</h1>
+        
         <div class="filters-container">
-          <a href="/moduloVentas/indexEmitirCotizacion.php" class="btn" style="margin-bottom: 1rem;">Emitir Cotización</a>
+          <a href="/moduloVentas/indexEmitirFactura.php" class="btn" style="margin-bottom: 1rem;">Emitir Factura</a>
           <div class="flex">
             <h2>Filtros de Búsqueda</h2>
           </div>
           <div class="filters">
-            <!-- Primer filtro de nro de cotización, un input text -->
-            <form action="/moduloVentas/getCotizacion.php" method="POST">
+            <!-- Primer filtro de nro de factura, un input text -->
+            <form action="/moduloVentas/getFactura.php" method="POST">
               <div class="input-container">
-                <label for="nroCotizacion">Nro. Cotización:</label>
-                <input type="text" id="nroCotizacion" name="txtNroCotizacion">
+                <label for="nroFactura">Nro. Factura:</label>
+                <input type="text" id="nroFactura" name="txtNroFactura">
               </div>
-              <input style="margin-top: 10px;" type="submit" name="btnBuscarNrcotaizacion" value="Buscar">
+              <input style="margin-top: 10px;" type="submit" name="btnBuscarNroFactura" value="Buscar">
             </form>
 
             <!-- Segundo filtro de Fecha, dos inputs de "desde" "hasta" -->
-            <form action="/moduloVentas/getCotizacion.php" method="POST">
+            <form action="/moduloVentas/getFactura.php" method="POST">
               <div class="input-container">
                 <label for="fechaDesde">Fecha desde:</label>
                 <input type="date" id="fechaDesde" name="txtFechaDesde">
@@ -53,7 +51,7 @@ class panelCotizacion extends pantalla
         </div>
 
         <div class="table-cotizaciones">
-          <table id="cotaizaciones-table">
+          <table id="facturas-table">
             <thead>
               <tr>
                 <th>Serie</th>
@@ -66,19 +64,19 @@ class panelCotizacion extends pantalla
               </tr>
             </thead>
             <tbody>
-              <?php if ($cotizaciones !== null) : ?>
+              <?php if ($facturas !== null) : ?>
 
-                <?php foreach ($cotizaciones as $cotaizacion) : ?>
+                <?php foreach ($facturas as $factura) : ?>
                   <tr>
-                    <td><?= $cotaizacion['SerieComprobanteID']; ?></td>
-                    <td><?= $cotaizacion['NumeroCorrelativo']; ?></td>
-                    <td><?= $cotaizacion['Cliente']; ?></td>
-                    <td><?= $cotaizacion['Obra']; ?></td>
-                    <td><?= $cotaizacion['FechaEmision']; ?></td>
-                    <td><?= $cotaizacion['ImporteTotal']; ?></td>
+                    <td><?= $factura['SerieComprobanteID']; ?></td>
+                    <td><?= $factura['NumeroCorrelativo']; ?></td>
+                    <td><?= $factura['Cliente']; ?></td>
+                    <td><?= $factura['Obra']; ?></td>
+                    <td><?= $factura['FechaEmision']; ?></td>
+                    <td><?= $factura['ImporteTotal']; ?></td>
                     <td>
-                      <form action="/moduloVentas/getCotizacion.php" method="POST">
-                        <input type="hidden" name="txtIDCotizacion" value="<?= $cotaizacion['CotizacionEmitidaID']; ?>">
+                      <form action="/moduloVentas/getFactura.php" method="POST">
+                        <input type="hidden" name="txtIDFactura" value="<?= $factura['FacturaEmitidaID']; ?>">
                         <input type="submit" name="btnGenerarPdf" value="Descargar PDF">
                       </form>
                     </td>
@@ -87,17 +85,15 @@ class panelCotizacion extends pantalla
 
               <?php else : ?>
                 <tr>
-                  <td colspan="7">No se encontraron solicitudes.</td>
+                  <td colspan="7">No se encontraron facturas.</td>
                 </tr>
               <?php endif; ?>
             </tbody>
           </table>
         </div>
-
       </main>
     </div>
 <?php
     $this->pieShow();
   }
 }
-?>

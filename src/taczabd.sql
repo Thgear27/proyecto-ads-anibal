@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: db
--- Generation Time: Dec 16, 2024 at 03:45 AM
--- Server version: 8.0.40
--- PHP Version: 8.2.26
+-- Servidor: db
+-- Tiempo de generación: 20-12-2024 a las 05:49:01
+-- Versión del servidor: 8.0.40
+-- Versión de PHP: 8.2.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `adsrocas`
+-- Base de datos: `adsrocas`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `boletaemitida`
+-- Estructura de tabla para la tabla `boletaemitida`
 --
 
 CREATE TABLE `boletaemitida` (
@@ -46,22 +46,27 @@ CREATE TABLE `boletaemitida` (
   `TotalIGV` double NOT NULL,
   `DescuentoGlobal` double NOT NULL,
   `ImporteTotal` double NOT NULL,
-  `Observaciones` varchar(255) NOT NULL
+  `CostoTotal` double NOT NULL,
+  `Ganancia` double NOT NULL,
+  `Observaciones` varchar(255) NOT NULL,
+  `Obra` varchar(255) NOT NULL,
+  `OrdenDeCompra` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `boletaemitida`
+-- Volcado de datos para la tabla `boletaemitida`
 --
 
-INSERT INTO `boletaemitida` (`BoletaEmitidaID`, `SerieComprobanteID`, `NumeroCorrelativo`, `UsuarioID`, `FechaEmision`, `FechaVencimiento`, `TipoPago`, `FormaPago`, `Moneda`, `ClienteID`, `EstadoDocumento`, `OpInafecta`, `OpExonerada`, `OpGratuita`, `OpGravada`, `TotalIGV`, `DescuentoGlobal`, `ImporteTotal`, `Observaciones`) VALUES
-(1, 4, 1, 2, '2024-10-20', '2024-10-20', 'Al contado', 'Efectivo', 'PEN', 1, 'Emitida', 0, 0, 0, 1680, 302.4, 0, 1982.4, 'Venta de productos gravados'),
-(2, 4, 2, 2, '2024-10-21', '2024-10-21', 'Al contado', 'Efectivo', 'PEN', 2, 'Emitida', 0, 0, 0, 186, 33.5, 0, 219.5, 'Venta de productos gravados'),
-(3, 4, 3, 2, '2024-10-22', '2024-10-22', 'Al contado', 'Efectivo', 'PEN', 3, 'Emitida', 0, 0, 0, 2220, 394.8, 0, 2614.8, 'Venta de productos gravados');
+INSERT INTO `boletaemitida` (`BoletaEmitidaID`, `SerieComprobanteID`, `NumeroCorrelativo`, `UsuarioID`, `FechaEmision`, `FechaVencimiento`, `TipoPago`, `FormaPago`, `Moneda`, `ClienteID`, `EstadoDocumento`, `OpInafecta`, `OpExonerada`, `OpGratuita`, `OpGravada`, `TotalIGV`, `DescuentoGlobal`, `ImporteTotal`, `CostoTotal`, `Ganancia`, `Observaciones`, `Obra`, `OrdenDeCompra`) VALUES
+(1, 4, 1, 2, '2024-10-20', '2024-10-20', 'Al contado', 'Efectivo', 'PEN', 1, 'Emitida', 0, 0, 0, 1680, 302.4, 0, 1982.4, 1882.4, 100, 'Venta de productos gravados', 'Los Olivos', 123),
+(2, 4, 2, 2, '2024-10-21', '2024-10-21', 'Al contado', 'Efectivo', 'PEN', 2, 'Emitida', 0, 0, 0, 186, 33.5, 0, 219.5, 119.5, 100, 'Venta de productos gravados', 'San Isidro', 234),
+(3, 4, 3, 2, '2024-10-22', '2024-10-22', 'Al contado', 'Efectivo', 'PEN', 3, 'Emitida', 0, 0, 0, 2220, 394.8, 0, 2614.8, 2514.8, 100, 'Venta de productos gravados', 'Miraflores', 345),
+(4, 4, 4, 1, '2024-12-20', '2024-12-20', 'Al contado', 'Efectivo', 'PEN', 9, 'Emitida', 0, 0, 0, 6500, 1170, 0, 7670, 6500, 1170, 'Boleta generada desde el sistema', 'playa', 4);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `boletaemitidadetalles`
+-- Estructura de tabla para la tabla `boletaemitidadetalles`
 --
 
 CREATE TABLE `boletaemitidadetalles` (
@@ -76,7 +81,7 @@ CREATE TABLE `boletaemitidadetalles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `boletaemitidadetalles`
+-- Volcado de datos para la tabla `boletaemitidadetalles`
 --
 
 INSERT INTO `boletaemitidadetalles` (`BoletaEmitidaDetallesID`, `BoletaEmitidaID`, `ProductoDetallesID`, `Cantidad`, `PrecioUnitarioVenta`, `ValorUnitarioVenta`, `Descuento`, `Total`) VALUES
@@ -85,12 +90,13 @@ INSERT INTO `boletaemitidadetalles` (`BoletaEmitidaDetallesID`, `BoletaEmitidaID
 (3, 2, 3, 50, 3.54, 3, 0, 177),
 (4, 2, 4, 10, 4.25, 3.6, 0, 42.5),
 (5, 3, 5, 5, 14.16, 12, 0, 70.8),
-(6, 3, 6, 100, 25.44, 21.6, 0, 2544);
+(6, 3, 6, 100, 25.44, 21.6, 0, 2544),
+(7, 4, 1, 50, 130, 130, 0, 6500);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cliente`
+-- Estructura de tabla para la tabla `cliente`
 --
 
 CREATE TABLE `cliente` (
@@ -105,7 +111,7 @@ CREATE TABLE `cliente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `cliente`
+-- Volcado de datos para la tabla `cliente`
 --
 
 INSERT INTO `cliente` (`ClienteID`, `TipoDocumentoIdentidad`, `NumeroDocumentoIdentidad`, `NombreCompletoORazonSocial`, `Telefono`, `Email`, `Direccion`, `FechaRegistro`) VALUES
@@ -115,12 +121,14 @@ INSERT INTO `cliente` (`ClienteID`, `TipoDocumentoIdentidad`, `NumeroDocumentoId
 (4, 'DNI', '12345678', 'Carla Andrea Silva Quispe', 965432187, 'carla.silva@gmail.com', 'CALLE MORALES 425, LA MOLINA', '2024-10-18'),
 (5, 'RUC', '20546781234', 'CONSTRUCTORA EL SOL S.A.C.', 912345123, 'contacto@constructorelsol.com', 'JR. LAS PALMERAS 530, SAN ISIDRO', '2024-10-17'),
 (6, 'RUC', '20487654321', 'INGENIERÍA GLOBAL PERÚ S.A.', 921345678, 'ventas@globalperu.com', 'AV. LOS INGENIEROS 150, SAN MIGUEL', '2024-10-16'),
-(7, 'RUC', '20345678123', 'PROYEC CONTRATISTAS GENERALES S.A.', 987654321, 'ventas@proyec.com', 'AV. LA MARINA 2050, PUEBLO LIBRE', '2024-10-15');
+(7, 'RUC', '20345678123', 'PROYEC CONTRATISTAS GENERALES S.A.', 987654321, 'ventas@proyec.com', 'AV. LA MARINA 2050, PUEBLO LIBRE', '2024-10-15'),
+(8, 'DNI', '27221472752', 'roca', 0, '', 'av las palmas', '2024-12-20'),
+(9, 'DNI', '2722147275233', 'roca', 0, '', 'av las palmas', '2024-12-20');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comprobanterecibido`
+-- Estructura de tabla para la tabla `comprobanterecibido`
 --
 
 CREATE TABLE `comprobanterecibido` (
@@ -145,7 +153,7 @@ CREATE TABLE `comprobanterecibido` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `comprobanterecibido`
+-- Volcado de datos para la tabla `comprobanterecibido`
 --
 
 INSERT INTO `comprobanterecibido` (`ComprobanteRecibidoID`, `TipoComprobanteRecibido`, `NumeroSerieYCorrelativo`, `FechaEmision`, `FechaVencimiento`, `TipoPago`, `FormaPago`, `Moneda`, `ProveedorID`, `Op.Inafecta`, `Op.Exonerada`, `Op.Gratuita`, `Op.Gravada`, `TotalIGV`, `DescuentoGlobal`, `ImporteTotal`, `Observaciones`, `Archivo`) VALUES
@@ -161,7 +169,7 @@ INSERT INTO `comprobanterecibido` (`ComprobanteRecibidoID`, `TipoComprobanteReci
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comprobanterecibidodetalles`
+-- Estructura de tabla para la tabla `comprobanterecibidodetalles`
 --
 
 CREATE TABLE `comprobanterecibidodetalles` (
@@ -176,7 +184,7 @@ CREATE TABLE `comprobanterecibidodetalles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `comprobanterecibidodetalles`
+-- Volcado de datos para la tabla `comprobanterecibidodetalles`
 --
 
 INSERT INTO `comprobanterecibidodetalles` (`ComprobanteRecibidoDetallesID`, `ComprobanteRecibidoID`, `ProductoDetallesID`, `Cantidad`, `PrecioUnitarioVenta`, `ValorUnitarioVenta`, `Descuento`, `Total`) VALUES
@@ -200,7 +208,7 @@ INSERT INTO `comprobanterecibidodetalles` (`ComprobanteRecibidoDetallesID`, `Com
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cotizacionemitida`
+-- Estructura de tabla para la tabla `cotizacionemitida`
 --
 
 CREATE TABLE `cotizacionemitida` (
@@ -226,7 +234,7 @@ CREATE TABLE `cotizacionemitida` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `cotizacionemitida`
+-- Volcado de datos para la tabla `cotizacionemitida`
 --
 
 INSERT INTO `cotizacionemitida` (`CotizacionEmitidaID`, `SerieComprobanteID`, `NumeroCorrelativo`, `UsuarioID`, `FechaEmision`, `FechaVencimiento`, `TipoPago`, `FormaPago`, `Moneda`, `ClienteID`, `Op.Inafecta`, `Op.Exonerada`, `Op.Gratuita`, `Op.Gravada`, `TotalIGV`, `DescuentoGlobal`, `ImporteTotal`, `Observaciones`, `Obra`) VALUES
@@ -237,7 +245,7 @@ INSERT INTO `cotizacionemitida` (`CotizacionEmitidaID`, `SerieComprobanteID`, `N
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cotizacionemitidadetalles`
+-- Estructura de tabla para la tabla `cotizacionemitidadetalles`
 --
 
 CREATE TABLE `cotizacionemitidadetalles` (
@@ -252,7 +260,7 @@ CREATE TABLE `cotizacionemitidadetalles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `cotizacionemitidadetalles`
+-- Volcado de datos para la tabla `cotizacionemitidadetalles`
 --
 
 INSERT INTO `cotizacionemitidadetalles` (`CotizacionEmitidaDetallesID`, `CotizacionEmitidaID`, `ProductoDetallesID`, `Cantidad`, `PrecioUnitarioVenta`, `ValorUnitarioVenta`, `Descuento`, `Total`) VALUES
@@ -267,7 +275,7 @@ INSERT INTO `cotizacionemitidadetalles` (`CotizacionEmitidaDetallesID`, `Cotizac
 -- --------------------------------------------------------
 
 --
--- Table structure for table `facturaemitida`
+-- Estructura de tabla para la tabla `facturaemitida`
 --
 
 CREATE TABLE `facturaemitida` (
@@ -289,22 +297,28 @@ CREATE TABLE `facturaemitida` (
   `TotalIGV` double NOT NULL,
   `DescuentoGlobal` double NOT NULL,
   `ImporteTotal` double NOT NULL,
-  `Observaciones` varchar(255) NOT NULL
+  `CostoTotal` double NOT NULL,
+  `Ganancia` double NOT NULL,
+  `Observaciones` varchar(255) NOT NULL,
+  `Obra` varchar(255) NOT NULL,
+  `OrdenDeCompra` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `facturaemitida`
+-- Volcado de datos para la tabla `facturaemitida`
 --
 
-INSERT INTO `facturaemitida` (`FacturaEmitidaID`, `SerieComprobanteID`, `NumeroCorrelativo`, `UsuarioID`, `FechaEmision`, `FechaVencimiento`, `TipoPago`, `FormaPago`, `Moneda`, `ClienteID`, `EstadoDocumento`, `OpInafecta`, `OpExonerada`, `OpGratuita`, `OpGravada`, `TotalIGV`, `DescuentoGlobal`, `ImporteTotal`, `Observaciones`) VALUES
-(1, 1, 1, 1, '2024-10-21', '2024-10-21', 'Al contado', 'Efectivo', 'PEN', 5, 'Emitida', 0, 0, 0, 18120, 3257.6, 0, 21377.6, 'Venta de productos gravados'),
-(2, 1, 2, 1, '2024-10-18', '2024-10-18', 'Al contado', 'Efectivo', 'PEN', 6, 'Emitida', 0, 0, 0, 2700, 486, 0, 3186, 'Venta de productos gravados'),
-(3, 1, 3, 1, '2024-10-15', '2024-10-15', 'Al contado', 'Efectivo', 'PEN', 7, 'Emitida', 0, 0, 0, 1320, 237.6, 0, 1557.6, 'Venta de productos gravados');
+INSERT INTO `facturaemitida` (`FacturaEmitidaID`, `SerieComprobanteID`, `NumeroCorrelativo`, `UsuarioID`, `FechaEmision`, `FechaVencimiento`, `TipoPago`, `FormaPago`, `Moneda`, `ClienteID`, `EstadoDocumento`, `OpInafecta`, `OpExonerada`, `OpGratuita`, `OpGravada`, `TotalIGV`, `DescuentoGlobal`, `ImporteTotal`, `CostoTotal`, `Ganancia`, `Observaciones`, `Obra`, `OrdenDeCompra`) VALUES
+(1, 1, 1, 1, '2024-10-21', '2024-10-21', 'Al contado', 'Efectivo', 'PEN', 5, 'Emitida', 0, 0, 0, 18120, 3257.6, 0, 21377.6, 21277.6, 100, 'Venta de productos gravados', 'Villa Maria del Triunfo', 456),
+(2, 1, 2, 1, '2024-10-18', '2024-10-18', 'Al contado', 'Efectivo', 'PEN', 6, 'Emitida', 0, 0, 0, 2700, 486, 0, 3186, 3086, 100, 'Venta de productos gravados', 'Ventanilla', 567),
+(3, 1, 3, 1, '2024-10-15', '2024-10-15', 'Al contado', 'Efectivo', 'PEN', 7, 'Emitida', 0, 0, 0, 1320, 237.6, 0, 1557.6, 1457.6, 100, 'Venta de productos gravados', 'Villa El Salvador', 678),
+(4, 1, 4, 1, '2024-12-20', '2024-12-20', 'Al contado', 'Efectivo', 'PEN', 8, 'Emitida', 0, 0, 0, 6500, 1170, 0, 7670, 6500, 1170, 'Factura generada desde el sistema', 'untelssss', 4),
+(5, 1, 5, 1, '2024-12-20', '2024-12-20', 'Al contado', 'Efectivo', 'USD', 8, 'Emitida', 0, 0, 0, 375, 67.5, 0, 442.5, 375, 67.5, 'Factura generada desde el sistema', 'untelssss', 5);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `facturaemitidadetalles`
+-- Estructura de tabla para la tabla `facturaemitidadetalles`
 --
 
 CREATE TABLE `facturaemitidadetalles` (
@@ -319,7 +333,7 @@ CREATE TABLE `facturaemitidadetalles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `facturaemitidadetalles`
+-- Volcado de datos para la tabla `facturaemitidadetalles`
 --
 
 INSERT INTO `facturaemitidadetalles` (`FacturaEmitidaDetallesID`, `FacturaEmitidaID`, `ProductoDetallesID`, `Cantidad`, `PrecioUnitarioVenta`, `ValorUnitarioVenta`, `Descuento`, `Total`) VALUES
@@ -329,12 +343,14 @@ INSERT INTO `facturaemitidadetalles` (`FacturaEmitidaDetallesID`, `FacturaEmitid
 (4, 2, 8, 30, 70.8, 60, 0, 2124),
 (5, 2, 9, 100, 10.62, 9, 0, 1062),
 (6, 3, 13, 4, 212.4, 180, 0, 849.6),
-(7, 3, 15, 20, 35.4, 30, 0, 708);
+(7, 3, 15, 20, 35.4, 30, 0, 708),
+(8, 4, 1, 50, 130, 130, 0, 6500),
+(9, 5, 9, 50, 7.5, 7.5, 0, 375);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `producto`
+-- Estructura de tabla para la tabla `producto`
 --
 
 CREATE TABLE `producto` (
@@ -346,7 +362,7 @@ CREATE TABLE `producto` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `producto`
+-- Volcado de datos para la tabla `producto`
 --
 
 INSERT INTO `producto` (`ProductoID`, `CodigoProducto`, `Descripcion`, `ValorUnitarioVenta`, `EstadoProducto`) VALUES
@@ -369,7 +385,7 @@ INSERT INTO `producto` (`ProductoID`, `CodigoProducto`, `Descripcion`, `ValorUni
 -- --------------------------------------------------------
 
 --
--- Table structure for table `productodetalles`
+-- Estructura de tabla para la tabla `productodetalles`
 --
 
 CREATE TABLE `productodetalles` (
@@ -382,7 +398,7 @@ CREATE TABLE `productodetalles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `productodetalles`
+-- Volcado de datos para la tabla `productodetalles`
 --
 
 INSERT INTO `productodetalles` (`ProductoDetallesID`, `ProductoID`, `UnidadMedida`, `ValorUnitarioCompra`, `CategoriaFiscal`, `ProveedorID`) VALUES
@@ -405,7 +421,7 @@ INSERT INTO `productodetalles` (`ProductoDetallesID`, `ProductoID`, `UnidadMedid
 -- --------------------------------------------------------
 
 --
--- Table structure for table `proveedor`
+-- Estructura de tabla para la tabla `proveedor`
 --
 
 CREATE TABLE `proveedor` (
@@ -415,23 +431,25 @@ CREATE TABLE `proveedor` (
   `Telefono` int NOT NULL,
   `Email` varchar(255) NOT NULL,
   `Direccion` varchar(255) NOT NULL,
-  `FechaRegistro` date NOT NULL
+  `FechaRegistro` date NOT NULL,
+  `EstadoProveedor` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `proveedor`
+-- Volcado de datos para la tabla `proveedor`
 --
 
-INSERT INTO `proveedor` (`ProveedorID`, `NumeroRUC`, `RazonSocial`, `Telefono`, `Email`, `Direccion`, `FechaRegistro`) VALUES
-(1, '20200152837', 'PROVEEDORA INDUSTRIAL LIMA S.A.C.', 986124589, 'ventas@provlima.com', 'AV. INDUSTRIAL 980, LIMA', '2024-10-21'),
-(2, '20415823746', 'CABLES VOLCANICOS DEL PERÚ S.A.', 935124589, 'info@cablesvolcanicos.com', 'CALLE LOS MINERALES 256, CALLAO', '2024-10-20'),
-(3, '20354876231', 'INDUSTRIAS PINTURAS S.A.C.', 914789321, 'ventas@indpinturas.com', 'AV. PINTURAS 1050, SURCO, LIMA', '2024-10-19'),
-(4, '20512346789', 'MAQUINARIAS Y HERRAMIENTAS PERÚ S.A.', 987654321, 'info@maquinariasperu.com', 'JR. LOS HÉROES 350, SAN MARTÍN DE PORRES, LIMA', '2024-10-18');
+INSERT INTO `proveedor` (`ProveedorID`, `NumeroRUC`, `RazonSocial`, `Telefono`, `Email`, `Direccion`, `FechaRegistro`, `EstadoProveedor`) VALUES
+(1, '2001215141', 'JEANKING', 986124589, 'ventas@provlima.com', 'AV. INDUSTRIAL 980, LIMA', '2024-10-21', 1),
+(2, '20415823746', 'CABLES VOLCANICOS DEL PERÚ S.A.', 935124589, 'info@cablesvolcanicos.com', 'CALLE LOS MINERALES 256, CALLAO', '2024-10-20', 1),
+(3, '20354876231', 'INDUSTRIAS PINTURAS S.A.C.', 914789321, 'ventas@indpinturas.com', 'AV. PINTURAS 1050, SURCO, LIMA', '2024-10-19', 1),
+(4, '20512346789', 'MAQUINARIAS Y HERRAMIENTAS PERÚ S.A.', 987654321, 'info@maquinariasperu.com', 'JR. LOS HÉROES 350, SAN MARTÍN DE PORRES, LIMA', '2024-10-18', 0),
+(8, '12315151414', 'Brandiño ', 994040463, 'JeampierBarrios04@gmail.com', 'Laderas de villa', '2024-12-11', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `referencianotacredito`
+-- Estructura de tabla para la tabla `referencianotacredito`
 --
 
 CREATE TABLE `referencianotacredito` (
@@ -447,7 +465,7 @@ CREATE TABLE `referencianotacredito` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rol`
+-- Estructura de tabla para la tabla `rol`
 --
 
 CREATE TABLE `rol` (
@@ -456,18 +474,18 @@ CREATE TABLE `rol` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `rol`
+-- Volcado de datos para la tabla `rol`
 --
 
 INSERT INTO `rol` (`RolID`, `NombreRol`) VALUES
-(1, 'cajero'),
+(1, 'jefeVentas'),
 (2, 'vendedor'),
-(3, 'jefeVentas');
+(3, 'cajero');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `seriecomprobante`
+-- Estructura de tabla para la tabla `seriecomprobante`
 --
 
 CREATE TABLE `seriecomprobante` (
@@ -476,7 +494,7 @@ CREATE TABLE `seriecomprobante` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `seriecomprobante`
+-- Volcado de datos para la tabla `seriecomprobante`
 --
 
 INSERT INTO `seriecomprobante` (`SerieComprobanteID`, `NumeroSerie`) VALUES
@@ -494,7 +512,7 @@ INSERT INTO `seriecomprobante` (`SerieComprobanteID`, `NumeroSerie`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Estructura de tabla para la tabla `usuario`
 --
 
 CREATE TABLE `usuario` (
@@ -513,11 +531,11 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `usuario`
+-- Volcado de datos para la tabla `usuario`
 --
 
 INSERT INTO `usuario` (`UsuarioID`, `NombreUsuario`, `Contraseña`, `Nombres`, `Apellidos`, `Telefono`, `Email`, `DNI`, `RespuestaSecreta`, `FechaCreacion`, `EstadoUsuario`, `RolID`) VALUES
-(1, 'rocaAdmin', 'passw0rd123', 'Carlos', 'Roca Fernández', '987654321', 'admin@edificandolaroca.com', '12345678', 'Carlos', '2024-10-21', 1, 1),
+(1, 'Jeanking', '12345', 'Carlos', 'Roca Fernández', '987654321', 'admin@edificandolaroca.com', '12345678', 'Carlos', '2024-10-21', 1, 1),
 (2, 'pepeLijas', 'pepelij4s2024', 'Pepe', 'Lijas Ramírez', '987654322', 'pepe@lijasmax.com', '12345679', 'Firulais', '2024-10-21', 0, 1),
 (3, 'corteMaster', 'AGUMON2004', 'Juan', 'Corte Díaz', '987654323', 'master@cortediscos.com', '12345680', 'Cusco', '2024-10-21', 1, 1),
 (4, 'lijaKing', 'kinglijas2024', 'Luis', 'Rey Martínez', '987654324', 'king@lijaspro.com', '12345681', 'Pizza', '2024-10-20', 1, 2),
@@ -532,11 +550,11 @@ INSERT INTO `usuario` (`UsuarioID`, `NombreUsuario`, `Contraseña`, `Nombres`, `
 (14, 'Jimmy_saurux2004', '12345', 'Jimmy Alexander', 'Huerta Vasquez', '906272595', '2123010236@gmail.com', '72192033', 'Pinpon', '2024-12-14', 1, 1);
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `boletaemitida`
+-- Indices de la tabla `boletaemitida`
 --
 ALTER TABLE `boletaemitida`
   ADD PRIMARY KEY (`BoletaEmitidaID`),
@@ -546,7 +564,7 @@ ALTER TABLE `boletaemitida`
   ADD KEY `fk_boletaemitida_cliente` (`ClienteID`);
 
 --
--- Indexes for table `boletaemitidadetalles`
+-- Indices de la tabla `boletaemitidadetalles`
 --
 ALTER TABLE `boletaemitidadetalles`
   ADD PRIMARY KEY (`BoletaEmitidaDetallesID`),
@@ -555,14 +573,14 @@ ALTER TABLE `boletaemitidadetalles`
   ADD KEY `fk_boletaemitidadetalles_productodetalles` (`ProductoDetallesID`);
 
 --
--- Indexes for table `cliente`
+-- Indices de la tabla `cliente`
 --
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`ClienteID`),
   ADD UNIQUE KEY `ClienteID` (`ClienteID`);
 
 --
--- Indexes for table `comprobanterecibido`
+-- Indices de la tabla `comprobanterecibido`
 --
 ALTER TABLE `comprobanterecibido`
   ADD PRIMARY KEY (`ComprobanteRecibidoID`),
@@ -570,7 +588,7 @@ ALTER TABLE `comprobanterecibido`
   ADD KEY `fk_comprobanterecibido_proveedor` (`ProveedorID`);
 
 --
--- Indexes for table `comprobanterecibidodetalles`
+-- Indices de la tabla `comprobanterecibidodetalles`
 --
 ALTER TABLE `comprobanterecibidodetalles`
   ADD PRIMARY KEY (`ComprobanteRecibidoDetallesID`),
@@ -579,7 +597,7 @@ ALTER TABLE `comprobanterecibidodetalles`
   ADD KEY `fk_comprobanterecibidodetalles_productodetalles` (`ProductoDetallesID`);
 
 --
--- Indexes for table `cotizacionemitida`
+-- Indices de la tabla `cotizacionemitida`
 --
 ALTER TABLE `cotizacionemitida`
   ADD PRIMARY KEY (`CotizacionEmitidaID`),
@@ -589,7 +607,7 @@ ALTER TABLE `cotizacionemitida`
   ADD KEY `fk_cotizacionemitida_cliente` (`ClienteID`);
 
 --
--- Indexes for table `cotizacionemitidadetalles`
+-- Indices de la tabla `cotizacionemitidadetalles`
 --
 ALTER TABLE `cotizacionemitidadetalles`
   ADD PRIMARY KEY (`CotizacionEmitidaDetallesID`),
@@ -598,7 +616,7 @@ ALTER TABLE `cotizacionemitidadetalles`
   ADD KEY `fk_cotizacionemitidadetalles_productodetalles` (`ProductoDetallesID`);
 
 --
--- Indexes for table `facturaemitida`
+-- Indices de la tabla `facturaemitida`
 --
 ALTER TABLE `facturaemitida`
   ADD PRIMARY KEY (`FacturaEmitidaID`),
@@ -608,7 +626,7 @@ ALTER TABLE `facturaemitida`
   ADD KEY `fk_facturaekitida_cliente` (`ClienteID`);
 
 --
--- Indexes for table `facturaemitidadetalles`
+-- Indices de la tabla `facturaemitidadetalles`
 --
 ALTER TABLE `facturaemitidadetalles`
   ADD PRIMARY KEY (`FacturaEmitidaDetallesID`),
@@ -617,14 +635,14 @@ ALTER TABLE `facturaemitidadetalles`
   ADD KEY `fk_facturaemitidadetalles_productodetalles` (`ProductoDetallesID`);
 
 --
--- Indexes for table `producto`
+-- Indices de la tabla `producto`
 --
 ALTER TABLE `producto`
   ADD PRIMARY KEY (`ProductoID`),
   ADD UNIQUE KEY `ProductoID` (`ProductoID`);
 
 --
--- Indexes for table `productodetalles`
+-- Indices de la tabla `productodetalles`
 --
 ALTER TABLE `productodetalles`
   ADD PRIMARY KEY (`ProductoDetallesID`),
@@ -633,14 +651,14 @@ ALTER TABLE `productodetalles`
   ADD KEY `fk_productodetalles_proveedor` (`ProveedorID`);
 
 --
--- Indexes for table `proveedor`
+-- Indices de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
   ADD PRIMARY KEY (`ProveedorID`),
   ADD UNIQUE KEY `ProveedorID` (`ProveedorID`);
 
 --
--- Indexes for table `referencianotacredito`
+-- Indices de la tabla `referencianotacredito`
 --
 ALTER TABLE `referencianotacredito`
   ADD PRIMARY KEY (`ReferenciaNotaCreditoID`),
@@ -648,20 +666,20 @@ ALTER TABLE `referencianotacredito`
   ADD KEY `fk_referencianotacredito_facturaemitida` (`FacturaEmitidaID`);
 
 --
--- Indexes for table `rol`
+-- Indices de la tabla `rol`
 --
 ALTER TABLE `rol`
   ADD PRIMARY KEY (`RolID`);
 
 --
--- Indexes for table `seriecomprobante`
+-- Indices de la tabla `seriecomprobante`
 --
 ALTER TABLE `seriecomprobante`
   ADD PRIMARY KEY (`SerieComprobanteID`,`NumeroSerie`),
   ADD UNIQUE KEY `SerieComprobanteID` (`SerieComprobanteID`);
 
 --
--- Indexes for table `usuario`
+-- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`UsuarioID`),
@@ -669,111 +687,111 @@ ALTER TABLE `usuario`
   ADD KEY `fk_usuario_rol` (`RolID`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `boletaemitida`
+-- AUTO_INCREMENT de la tabla `boletaemitida`
 --
 ALTER TABLE `boletaemitida`
-  MODIFY `BoletaEmitidaID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `BoletaEmitidaID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `boletaemitidadetalles`
+-- AUTO_INCREMENT de la tabla `boletaemitidadetalles`
 --
 ALTER TABLE `boletaemitidadetalles`
-  MODIFY `BoletaEmitidaDetallesID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `BoletaEmitidaDetallesID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `cliente`
+-- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `ClienteID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ClienteID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `comprobanterecibido`
+-- AUTO_INCREMENT de la tabla `comprobanterecibido`
 --
 ALTER TABLE `comprobanterecibido`
   MODIFY `ComprobanteRecibidoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `comprobanterecibidodetalles`
+-- AUTO_INCREMENT de la tabla `comprobanterecibidodetalles`
 --
 ALTER TABLE `comprobanterecibidodetalles`
   MODIFY `ComprobanteRecibidoDetallesID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `cotizacionemitida`
+-- AUTO_INCREMENT de la tabla `cotizacionemitida`
 --
 ALTER TABLE `cotizacionemitida`
   MODIFY `CotizacionEmitidaID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `cotizacionemitidadetalles`
+-- AUTO_INCREMENT de la tabla `cotizacionemitidadetalles`
 --
 ALTER TABLE `cotizacionemitidadetalles`
   MODIFY `CotizacionEmitidaDetallesID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `facturaemitida`
+-- AUTO_INCREMENT de la tabla `facturaemitida`
 --
 ALTER TABLE `facturaemitida`
-  MODIFY `FacturaEmitidaID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `FacturaEmitidaID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `facturaemitidadetalles`
+-- AUTO_INCREMENT de la tabla `facturaemitidadetalles`
 --
 ALTER TABLE `facturaemitidadetalles`
-  MODIFY `FacturaEmitidaDetallesID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `FacturaEmitidaDetallesID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `producto`
+-- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
   MODIFY `ProductoID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT for table `productodetalles`
+-- AUTO_INCREMENT de la tabla `productodetalles`
 --
 ALTER TABLE `productodetalles`
   MODIFY `ProductoDetallesID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT for table `proveedor`
+-- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `ProveedorID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ProveedorID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `referencianotacredito`
+-- AUTO_INCREMENT de la tabla `referencianotacredito`
 --
 ALTER TABLE `referencianotacredito`
   MODIFY `ReferenciaNotaCreditoID` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `rol`
+-- AUTO_INCREMENT de la tabla `rol`
 --
 ALTER TABLE `rol`
   MODIFY `RolID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `seriecomprobante`
+-- AUTO_INCREMENT de la tabla `seriecomprobante`
 --
 ALTER TABLE `seriecomprobante`
   MODIFY `SerieComprobanteID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `usuario`
+-- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
   MODIFY `UsuarioID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `boletaemitida`
+-- Filtros para la tabla `boletaemitida`
 --
 ALTER TABLE `boletaemitida`
   ADD CONSTRAINT `fk_boletaemitida_cliente` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`),
@@ -781,27 +799,27 @@ ALTER TABLE `boletaemitida`
   ADD CONSTRAINT `fk_boletaemitida_usuario` FOREIGN KEY (`UsuarioID`) REFERENCES `usuario` (`UsuarioID`);
 
 --
--- Constraints for table `boletaemitidadetalles`
+-- Filtros para la tabla `boletaemitidadetalles`
 --
 ALTER TABLE `boletaemitidadetalles`
   ADD CONSTRAINT `fk_boletaemitidadetalles_boletaemitida` FOREIGN KEY (`BoletaEmitidaID`) REFERENCES `boletaemitida` (`BoletaEmitidaID`),
   ADD CONSTRAINT `fk_boletaemitidadetalles_productodetalles` FOREIGN KEY (`ProductoDetallesID`) REFERENCES `productodetalles` (`ProductoDetallesID`);
 
 --
--- Constraints for table `comprobanterecibido`
+-- Filtros para la tabla `comprobanterecibido`
 --
 ALTER TABLE `comprobanterecibido`
   ADD CONSTRAINT `fk_comprobanterecibido_proveedor` FOREIGN KEY (`ProveedorID`) REFERENCES `proveedor` (`ProveedorID`);
 
 --
--- Constraints for table `comprobanterecibidodetalles`
+-- Filtros para la tabla `comprobanterecibidodetalles`
 --
 ALTER TABLE `comprobanterecibidodetalles`
   ADD CONSTRAINT `fk_comprobanterecibidodetalles_comprobanterecibidoid` FOREIGN KEY (`ComprobanteRecibidoID`) REFERENCES `comprobanterecibido` (`ComprobanteRecibidoID`),
   ADD CONSTRAINT `fk_comprobanterecibidodetalles_productodetalles` FOREIGN KEY (`ProductoDetallesID`) REFERENCES `productodetalles` (`ProductoDetallesID`);
 
 --
--- Constraints for table `cotizacionemitida`
+-- Filtros para la tabla `cotizacionemitida`
 --
 ALTER TABLE `cotizacionemitida`
   ADD CONSTRAINT `fk_cotizacionemitida_cliente` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`),
@@ -809,14 +827,14 @@ ALTER TABLE `cotizacionemitida`
   ADD CONSTRAINT `fk_cotizacionemitida_usuario` FOREIGN KEY (`UsuarioID`) REFERENCES `usuario` (`UsuarioID`);
 
 --
--- Constraints for table `cotizacionemitidadetalles`
+-- Filtros para la tabla `cotizacionemitidadetalles`
 --
 ALTER TABLE `cotizacionemitidadetalles`
   ADD CONSTRAINT `fk_cotizacionemitidadetalles_cotizacionemitida` FOREIGN KEY (`CotizacionEmitidaID`) REFERENCES `cotizacionemitida` (`CotizacionEmitidaID`),
   ADD CONSTRAINT `fk_cotizacionemitidadetalles_productodetalles` FOREIGN KEY (`ProductoDetallesID`) REFERENCES `productodetalles` (`ProductoDetallesID`);
 
 --
--- Constraints for table `facturaemitida`
+-- Filtros para la tabla `facturaemitida`
 --
 ALTER TABLE `facturaemitida`
   ADD CONSTRAINT `fk_facturaekitida_cliente` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`ClienteID`),
@@ -824,14 +842,14 @@ ALTER TABLE `facturaemitida`
   ADD CONSTRAINT `fk_facturaekitida_usuario` FOREIGN KEY (`UsuarioID`) REFERENCES `usuario` (`UsuarioID`);
 
 --
--- Constraints for table `facturaemitidadetalles`
+-- Filtros para la tabla `facturaemitidadetalles`
 --
 ALTER TABLE `facturaemitidadetalles`
   ADD CONSTRAINT `fk_facturaemitidadetalles_facturaemitida` FOREIGN KEY (`FacturaEmitidaID`) REFERENCES `facturaemitida` (`FacturaEmitidaID`),
   ADD CONSTRAINT `fk_facturaemitidadetalles_productodetalles` FOREIGN KEY (`ProductoDetallesID`) REFERENCES `productodetalles` (`ProductoDetallesID`);
 
 --
--- Constraints for table `productodetalles`
+-- Filtros para la tabla `productodetalles`
 --
 ALTER TABLE `productodetalles`
   ADD CONSTRAINT `fk_productodetalles_producto` FOREIGN KEY (`ProductoID`) REFERENCES `producto` (`ProductoID`),
@@ -840,13 +858,13 @@ ALTER TABLE `productodetalles`
   ADD CONSTRAINT `productodetalles_ibfk_2` FOREIGN KEY (`ProveedorID`) REFERENCES `proveedor` (`ProveedorID`);
 
 --
--- Constraints for table `referencianotacredito`
+-- Filtros para la tabla `referencianotacredito`
 --
 ALTER TABLE `referencianotacredito`
   ADD CONSTRAINT `fk_referencianotacredito_facturaemitida` FOREIGN KEY (`FacturaEmitidaID`) REFERENCES `facturaemitida` (`FacturaEmitidaID`);
 
 --
--- Constraints for table `usuario`
+-- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
   ADD CONSTRAINT `fk_usuario_rol` FOREIGN KEY (`RolID`) REFERENCES `rol` (`RolID`);
@@ -855,4 +873,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-

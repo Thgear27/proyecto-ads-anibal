@@ -1,16 +1,16 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . '/shared/pantalla.php');
 
-class panelEmitirCotizacion extends pantalla
+class panelEmitirFactura extends pantalla
 {
-  public function panelEmitirCotizacionShow($productos = null)
+  public function panelEmitirFacturaShow($productos = null)
   {
     if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] != "SI") {
       header("Location: /");
       exit();
     }
 
-    $this->cabeceraShow("Cotazación", "/assets/emitirCotizacion.js");
+    $this->cabeceraShow("Emitir Factura", "/assets/emitirFactura.js");
 
     $rol = $_SESSION['rol'];
     $login = $_SESSION['login'];
@@ -24,9 +24,9 @@ class panelEmitirCotizacion extends pantalla
 
       <!-- Contenido principal -->
       <main style="padding: 4rem 2rem;">
-        <h1>Emisión de Cotización</h1>
+        <h1>Emisión de Factura</h1>
         <h2>Información del comprador:</h2>
-        <form action="/moduloVentas/getEmitirCotizacion.php" method="POST" class="emitir-cotizacion" id="emitir-cotizacion-form">
+        <form action="/moduloVentas/getEmitirFactura.php" method="POST" class="emitir-cotizacion" id="emitir-factura-form">
           <div class="input-container">
             <label>Nro de RUC / DNI:</label>
             <input type="text" id="nrRucDni" name="txtNrRucDni" required>
@@ -63,7 +63,7 @@ class panelEmitirCotizacion extends pantalla
         </form>
         <h2>Información de los productos:</h2>
         <div class="table-cotizaciones">
-          <table id="cotaizaciones-table">
+          <table id="facturas-table">
             <thead>
               <tr>
                 <th>Nro</th>
@@ -96,7 +96,7 @@ class panelEmitirCotizacion extends pantalla
 
               <?php else : ?>
                 <tr>
-                  <td colspan="6">No se encontraron solicitudes.</td>
+                  <td colspan="6">No se encontraron productos disponibles.</td>
                 </tr>
               <?php endif; ?>
             </tbody>
