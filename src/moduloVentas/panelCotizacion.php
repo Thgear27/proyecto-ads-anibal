@@ -10,7 +10,7 @@ class panelCotizacion extends pantalla
       exit();
     }
 
-    $this->cabeceraShow("Cotazación");
+    $this->cabeceraShow("Cotizacion");
 
     $rol = $_SESSION['rol'];
     $login = $_SESSION['login'];
@@ -21,7 +21,6 @@ class panelCotizacion extends pantalla
       <?php
       $this->menuShow($rol);
       ?>
-
 
       <!-- Contenido principal -->
       <main style="padding: 0 2rem;">
@@ -71,7 +70,7 @@ class panelCotizacion extends pantalla
 
                 <?php foreach ($cotizaciones as $cotaizacion) : ?>
                   <tr>
-                    <td><?= $cotaizacion['SerieComprobanteID']; ?></td>
+                    <td><?= $cotaizacion['NumeroSerie']; ?></td>
                     <td><?= $cotaizacion['NumeroCorrelativo']; ?></td>
                     <td><?= $cotaizacion['Cliente']; ?></td>
                     <td><?= $cotaizacion['Obra']; ?></td>

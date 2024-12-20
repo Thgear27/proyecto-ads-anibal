@@ -90,4 +90,51 @@ class Usuario
         Conexion::desConectarBD();
         return null; // No se encontró el rol
     }
+    public function obtenerUsuarioPorLogin($login)
+    {
+        $conexion = Conexion::conectarBD();
+        $login = $conexion->real_escape_string($login);
+
+        $sql = "SELECT NombreUsuario FROM usuario WHERE NombreUsuario = '$login'";
+        $resultado = $conexion->query($sql);
+
+        $usuario = null;
+        if ($resultado->num_rows > 0) {
+            $usuario = $resultado->fetch_assoc();
+        }
+
+        Conexion::desConectarBD();
+        return $usuario;
+    }
+
+    public function validarRespuestaSeguridad($login, $respuesta)
+    {
+        $conexion = Conexion::conectarBD();
+        $login = $conexion->real_escape_string($login);
+        $respuesta = $conexion->real_escape_string($respuesta);
+
+        $sql = "SELECT RespuestaSecreta FROM usuario WHERE NombreUsuario = '$login' AND RespuestaSecreta = '$respuesta'";
+        $resultado = $conexion->query($sql);
+
+        $esValido = $resultado->num_rows > 0;
+
+        Conexion::desConectarBD();
+        return $esValido;
+    }
+
+    public function actualizarContrasena($login, $nuevaContrasena)
+    {
+        $conexion = Conexion::conectarBD();
+        $login = $conexion->real_escape_string($login);
+        $nuevaContrasena = ($nuevaContrasena);
+
+        $sql = "UPDATE usuario SET Contraseña = '$nuevaContrasena' WHERE NombreUsuario = '$login'";
+        $resultado = $conexion->query($sql);
+
+        $exito = $resultado === true;
+
+        Conexion::desConectarBD();
+        return $exito;
+    }
+
 }
