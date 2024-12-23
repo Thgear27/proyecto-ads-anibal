@@ -1,167 +1,84 @@
 <?php
-class panelReporteVentas
+include_once($_SERVER['DOCUMENT_ROOT'] . '/shared/pantalla.php');
+
+class panelReporteVentas extends pantalla
 {
     public function panelReporteVentasShow($datosReporte)
     {
+        // Validación de sesión
+        if (!isset($_SESSION['autenticado']) || $_SESSION['autenticado'] != "SI") {
+            header("Location: /");
+            exit();
+        }
+
+        // Cabecera
+        $this->cabeceraShow("Reporte de Ventas");
+
+        // Obtener el rol del usuario
+        $rol = $_SESSION['rol'];
 ?>
-        <!DOCTYPE html>
-        <html lang="es">
+        <!-- Contenedor principal -->
+        <div style="display: flex; height: 100vh;">
+            <!-- Menú lateral -->
+            <?php
+            $this->menuShow($rol); // Mostrar menú lateral basado en el rol
+            ?>
 
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Reporte de Ventas</title>
-            <style>
-                /* General */
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    background-color: #f4f4f4;
-                    color: #333;
-                }
+            <!-- Contenido principal -->
+            <main style="padding: 20px; flex: 1;">
+                <h1 style="text-align: center; color: #00695c;">Reporte de Ventas</h1>
 
-                h1 {
-                    text-align: center;
-                    color: #00695c;
-                    margin-top: 20px;
-                }
+                <form method="POST" action="getReporteVenta.php" style="margin-bottom: 20px;">
+                    <label for="desde">Desde:</label>
+                    <input type="date" name="desde" id="desde" value="<?php echo isset($_POST['desde']) ? $_POST['desde'] : ''; ?>" style="margin-right: 10px; padding: 5px; border-radius: 5px;">
 
-                /* Formulario */
-                form {
-                    display: flex;
-                    justify-content: center;
-                    gap: 10px;
-                    margin: 20px 0;
-                }
+                    <label for="hasta">Hasta:</label>
+                    <input type="date" name="hasta" id="hasta" value="<?php echo isset($_POST['hasta']) ? $_POST['hasta'] : ''; ?>" style="margin-right: 10px; padding: 5px; border-radius: 5px;">
 
-                label {
-                    font-weight: bold;
-                }
+                    <button type="submit" name="btnBuscar" style="background-color: #00695c; color: white; border: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; cursor: pointer;">Buscar</button>
+                    <button type="submit" name="btnGenerarReporte" style="background-color: #004d40; color: white; border: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; cursor: pointer;">Generar reporte</button>
+                </form>
 
-                input[type="date"] {
-                    padding: 5px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                }
-
-                button {
-                    background-color: #00695c;
-                    color: white;
-                    border: none;
-                    padding: 8px 15px;
-                    cursor: pointer;
-                    border-radius: 5px;
-                    font-weight: bold;
-                }
-
-                button:hover {
-                    background-color: #004d40;
-                }
-
-                /* Tabla */
-                table {
-                    margin: 20px auto;
-                    width: 90%;
-                    border-collapse: collapse;
-                    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-                    background-color: #fff;
-                }
-
-                th,
-                td {
-                    border: 1px solid #ddd;
-                    padding: 10px;
-                    text-align: center;
-                }
-
-                th {
-                    background-color: #00695c;
-                    color: white;
-                }
-
-                tr:nth-child(even) {
-                    background-color: #f2f2f2;
-                }
-
-                tr:hover {
-                    background-color: #e0f2f1;
-                }
-
-                /* Botón Salir */
-                .btn-salir {
-                    display: block;
-                    text-align: center;
-                    margin: 20px auto;
-                    background-color: #d32f2f;
-                    color: white;
-                    padding: 10px 15px;
-                    text-decoration: none;
-                    border-radius: 5px;
-                    font-weight: bold;
-                }
-
-                .btn-salir:hover {
-                    background-color: #b71c1c;
-                }
-            </style>
-        </head>
-
-        <body>
-            <h1>Reporte de Ventas</h1>
-
-            <form method="POST" action="getReporteVenta.php">
-                <label for="desde">Desde:</label>
-                <input type="date" name="desde" id="desde" value="<?php echo isset($_POST['desde']) ? $_POST['desde'] : ''; ?>">
-
-                <label for="hasta">Hasta:</label>
-                <input type="date" name="hasta" id="hasta" value="<?php echo isset($_POST['hasta']) ? $_POST['hasta'] : ''; ?>">
-
-                <button type="submit" name="btnBuscar">Buscar</button>
-                <button type="submit" name="btnGenerarReporte">Generar reporte</button>
-            </form>
-
-
-
-
-
-            <!-- Tabla -->
-            <table>
-                <tr>
-                    <th>Serie y Correlativo</th>
-                    <th>Tipo</th>
-                    <th>Cliente</th>
-                    <th>Obra</th>
-                    <th>Orden de Compra</th>
-                    <th>Fecha Emisión</th>
-                    <th>Importe Total</th>
-                    <th>Costo Total</th>
-                    <th>Ganancia</th>
-                </tr>
-                <?php if (!empty($datosReporte)) {
-                    foreach ($datosReporte as $reporte) {
-                        echo "<tr>
-                                <td>{$reporte['NumeroSerieYCorrelativo']}</td>
-                                <td>{$reporte['TipoComprobante']}</td>
-                                <td>{$reporte['NombreCompletoORazonSocial']}</td>
-                                <td>{$reporte['Obra']}</td>
-                                <td>{$reporte['OrdenDeCompra']}</td>
-                                <td>{$reporte['FechaEmision']}</td>
-                                <td>{$reporte['ImporteTotal']}</td>
-                                <td>{$reporte['CostoTotal']}</td>
-                                <td>{$reporte['Ganancia']}</td>
-                              </tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='9' style='text-align: center;'>No hay datos disponibles</td></tr>";
-                } ?>
-            </table>
-
-            <!-- Botón Salir -->
-        </body>
-
-        </html>
+                <!-- Tabla -->
+                <table style="margin: auto; width: 90%; border-collapse: collapse; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2); background-color: #fff;">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #00695c; color: white; padding: 10px;">Serie y Correlativo</th>
+                            <th style="background-color: #00695c; color: white; padding: 10px;">Tipo</th>
+                            <th style="background-color: #00695c; color: white; padding: 10px;">Cliente</th>
+                            <th style="background-color: #00695c; color: white; padding: 10px;">Obra</th>
+                            <th style="background-color: #00695c; color: white; padding: 10px;">Orden de Compra</th>
+                            <th style="background-color: #00695c; color: white; padding: 10px;">Fecha Emisión</th>
+                            <th style="background-color: #00695c; color: white; padding: 10px;">Importe Total</th>
+                            <th style="background-color: #00695c; color: white; padding: 10px;">Costo Total</th>
+                            <th style="background-color: #00695c; color: white; padding: 10px;">Ganancia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($datosReporte)) {
+                            foreach ($datosReporte as $reporte) {
+                                echo "<tr style='text-align: center;'>
+                                        <td>{$reporte['NumeroSerieYCorrelativo']}</td>
+                                        <td>{$reporte['TipoComprobante']}</td>
+                                        <td>{$reporte['NombreCompletoORazonSocial']}</td>
+                                        <td>{$reporte['Obra']}</td>
+                                        <td>{$reporte['OrdenDeCompra']}</td>
+                                        <td>{$reporte['FechaEmision']}</td>
+                                        <td>{$reporte['ImporteTotal']}</td>
+                                        <td>{$reporte['CostoTotal']}</td>
+                                        <td>{$reporte['Ganancia']}</td>
+                                      </tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='9' style='text-align: center;'>No hay datos disponibles</td></tr>";
+                        } ?>
+                    </tbody>
+                </table>
+            </main>
+        </div>
 <?php
+        // Pie de página
+        $this->pieShow();
     }
 }
 ?>

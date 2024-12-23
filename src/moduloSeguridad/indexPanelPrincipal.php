@@ -8,6 +8,8 @@ if (!isset($_SESSION['autenticado'])) {
     exit();
 }
 
+
+
 // Incluir la clase que muestra el panel principal
 include_once('menuPrincipalSistema.php');
 

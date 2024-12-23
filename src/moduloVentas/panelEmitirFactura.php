@@ -29,22 +29,22 @@ class panelEmitirFactura extends pantalla
         <form action="/moduloVentas/getEmitirFactura.php" method="POST" class="emitir-cotizacion" id="emitir-factura-form">
           <div class="input-container">
             <label>Nro de RUC / DNI:</label>
-            <input type="text" id="nrRucDni" name="txtNrRucDni" required>
+            <input type="text" id="nrRucDni" name="txtNrRucDni" >
           </div>
 
           <div class="input-container">
             <label>Razón Social:</label>
-            <input type="text" id="razonSocial" name="txtRazonSocial" required>
+            <input type="text" id="razonSocial" name="txtRazonSocial" >
           </div>
 
           <div class="input-container">
             <label>Dirección: </label>
-            <input type="text" id="direccion" name="txtDireccion" required>
+            <input type="text" id="direccion" name="txtDireccion" >
           </div>
 
           <div class="input-container">
             <label>Obra: </label>
-            <input type="text" id="obra" name="txtObra" required>
+            <input type="text" id="obra" name="txtObra" >
           </div>
 
           <div class="input-container">

@@ -133,9 +133,20 @@ class controlEmitirBoleta
     );
 
     if ($numeroCorrelativo) {
-      return ['success' => true, 'message' => "Boleta guardada con el número: $numeroCorrelativo"];
+      $objMensaje = new screenMensajeSistema();
+      $objMensaje->screenMensajeSistemaShow(
+        "Mensaje",
+        "Boleta Guardada correctamente",
+        "<a href='../moduloVentas/indexBoleta.php'>Regresar</a>"
+      );
+      exit();
     } else {
-      return ['success' => false, 'message' => 'Error al guardar la boleta.'];
+      $objMensaje = new screenMensajeSistema();
+      $objMensaje->screenMensajeSistemaShow(
+        "Error",
+        "Boleta No se guardo correctamente",
+        "<a href='../moduloVentas/indexBoleta.php'>Regresar</a>"
+      );
     }
   }
 }

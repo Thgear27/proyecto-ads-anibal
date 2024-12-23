@@ -11,7 +11,7 @@ if (!isset($_SESSION['autenticado'])) {
 
 $rol = $_SESSION['rol'];
 
-if ($rol != "vendedor" && $rol != "jefeVentas") {
+if ($rol != "cajero" && $rol != "jefeVentas") {
   header('Location: /moduloSeguridad/indexPanelPrincipal.php');
   exit();
 }
