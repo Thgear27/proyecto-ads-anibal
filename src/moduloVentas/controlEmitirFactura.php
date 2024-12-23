@@ -133,9 +133,20 @@ class controlEmitirFactura
     );
 
     if ($numeroCorrelativo) {
-      return ['success' => true, 'message' => "Factura guardada con el número: $numeroCorrelativo"];
+      $objMensaje = new screenMensajeSistema();
+      $objMensaje->screenMensajeSistemaShow(
+        "Mensaje",
+        "Factura Guardada correctamente",
+        "<a href='../moduloVentas/indexFactura.php'>Regresar</a>"
+      );
+      exit();
     } else {
-      return ['success' => false, 'message' => 'Error al guardar la factura.'];
+      $objMensaje = new screenMensajeSistema();
+      $objMensaje->screenMensajeSistemaShow(
+        "Error",
+        "Factura No se guardo correctamente",
+        "<a href='../moduloVentas/indexFactura.php'>Regresar</a>"
+      );
     }
   }
 }

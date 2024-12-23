@@ -6,14 +6,15 @@ class Boletas
   public function getBoletas($numeroBoleta = null, $fechadesde = null, $fechahasta = null)
   {
     $sql = "SELECT be.BoletaEmitidaID,
-              be.SerieComprobanteID,
-              be.NumeroCorrelativo,
-              cl.NombreCompletoORazonSocial AS Cliente,
-              be.Obra,
-              be.FechaEmision,
-              be.ImporteTotal
-            FROM boletaemitida be
-            INNER JOIN cliente cl ON be.ClienteID = cl.ClienteID";
+    sc.NumeroSerie,
+    LPAD(be.NumeroCorrelativo, 10, '0') AS NumeroCorrelativo,
+    cl.NombreCompletoORazonSocial AS Cliente,
+    be.Obra,
+    be.FechaEmision,
+    be.ImporteTotal
+  FROM boletaemitida be
+  INNER JOIN cliente cl ON be.ClienteID = cl.ClienteID
+  INNER JOIN seriecomprobante sc ON be.SerieComprobanteID = sc.SerieComprobanteID";
 
     $conditions = [];
 
