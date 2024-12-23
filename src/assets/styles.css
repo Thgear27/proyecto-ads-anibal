@@ -460,7 +460,7 @@ input[name="btnImprimir"] {
 
 .table-cotizaciones {
   border: 1px solid #ddd;
-  max-height: 250px;
+  max-height: 350px;
   overflow-x: auto;
 }
 
