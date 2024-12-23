@@ -68,7 +68,7 @@ class panelBoleta extends pantalla
 
                 <?php foreach ($boletas as $boleta) : ?>
                   <tr>
-                    <td><?= $boleta['SerieComprobanteID']; ?></td>
+                    <td><?= $boleta['NumeroSerie']; ?></td>
                     <td><?= $boleta['NumeroCorrelativo']; ?></td>
                     <td><?= $boleta['Cliente']; ?></td>
                     <td><?= $boleta['Obra']; ?></td>

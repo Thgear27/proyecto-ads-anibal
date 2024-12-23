@@ -14,7 +14,7 @@ class panelProveedores extends pantalla
         // Cabecera
         $this->cabeceraShow("Gestión de Proveedores");
 
-        // Obtener el rol del usuario
+        // Obtener el rol del usuario   
         $rol = $_SESSION['rol'];
 ?>
         <!-- Estilos para la tabla -->

@@ -12,7 +12,7 @@ if (!isset($_SESSION['autenticado'])) {
 $rol = $_SESSION['rol'];
 
 // Si el rol no es "vendedor" o "jefeVentas", redirigir al panel principal
-if ($rol != "vendedor" && $rol != "jefeVentas") {
+if ($rol != "cajero" && $rol != "jefeVentas") {
   header('Location: /moduloSeguridad/indexPanelPrincipal.php');
   exit();
 }

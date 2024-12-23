@@ -5,9 +5,11 @@ class Cotizaciones
 {
   public function getCotizaciones($numerocotizacion = null, $fechadesde = null, $fechahasta = null)
   {
+    $conexion = Conexion::conectarBD();
+
     $sql = "SELECT 
               ce.CotizacionEmitidaID,
-              sc.NumeroSerie, -- Se obtiene el número de serie de la tabla seriecomprobante
+              sc.NumeroSerie,
               LPAD(ce.NumeroCorrelativo, 10, '0') AS NumeroCorrelativo,
               cl.NombreCompletoORazonSocial AS Cliente,
               ce.Obra,
@@ -18,40 +20,51 @@ class Cotizaciones
             INNER JOIN 
               cliente cl ON ce.ClienteID = cl.ClienteID
             INNER JOIN 
-              seriecomprobante sc ON ce.SerieComprobanteID = sc.SerieComprobanteID;";
+              seriecomprobante sc ON ce.SerieComprobanteID = sc.SerieComprobanteID";
 
-    $conditions = array();
+    $conditions = [];
+    $params = [];
+    $types = '';
 
     if ($numerocotizacion !== null && $numerocotizacion !== '') {
-      $conditions[] = "ce.NumeroCorrelativo = $numerocotizacion";
+      $conditions[] = "ce.NumeroCorrelativo = ?";
+      $params[] = $numerocotizacion;
+      $types .= 'i'; // Entero
     }
 
     if ($fechadesde !== null && $fechadesde !== '') {
-      $conditions[] = "ce.FechaEmision >= '$fechadesde'";
+      $conditions[] = "ce.FechaEmision >= ?";
+      $params[] = $fechadesde;
+      $types .= 's'; // String (fecha)
     }
 
     if ($fechahasta !== null && $fechahasta !== '') {
-      $conditions[] = "ce.FechaEmision <= '$fechahasta'";
+      $conditions[] = "ce.FechaEmision <= ?";
+      $params[] = $fechahasta;
+      $types .= 's'; // String (fecha)
     }
 
-    if (count($conditions) > 0) {
+    if (!empty($conditions)) {
       $sql .= " WHERE " . implode(" AND ", $conditions);
     }
 
-    $conexion = Conexion::conectarBD();
-    $respuesta = $conexion->query($sql);
+    $stmt = $conexion->prepare($sql);
 
-    if (!$respuesta) {
-      die("Error en la consulta: " . $conexion->error);
+    if (!empty($params)) {
+      $stmt->bind_param($types, ...$params);
     }
 
-    $cotizaciones = array();
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    while ($fila = $respuesta->fetch_assoc()) {
+    $cotizaciones = [];
+    while ($fila = $result->fetch_assoc()) {
       $cotizaciones[] = $fila;
     }
 
+    $stmt->close();
     Conexion::desConectarBD();
+
     return $cotizaciones;
   }
 

@@ -42,7 +42,7 @@ class pantalla
             // Menú para "cajero"
             if ($rol == "cajero") {
             ?>
-              <li><a href="/moduloSeguridad/indexPanelPrincipal.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Menú</a></li>
+              <li><a href="../moduloSeguridad/indexPanelPrincipal.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Menú</a></li>
               <li><a href="/moduloVentas/indexFactura.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Factura</a></li>
               <li><a href="/moduloVentas/indexBoleta.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Boleta</a></li>
               <li><a href="/moduloVentas/indexGestionarCompras.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Compras</a></li>
@@ -52,13 +52,14 @@ class pantalla
             elseif ($rol == "vendedor") {
             ?>
               <li><a href="/moduloSeguridad/indexPanelPrincipal.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Menú</a></li>
-              <li><a href="../moduloVentas/indexCotizacion.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Cotizacion</a></li>
+              <li><a href="/moduloVentas/indexCotizacion.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Cotizacion</a></li>
               <li>
                 <form method="post" action="../moduloVentas/getProducto.php" style="margin: 0;">
                   <input type="submit" name="btnProductos" value="Productos" style="color: white; text-decoration: none; display: block; padding: 8px; background-color: #00695c; border: none; cursor: pointer; font-size: 1em;">
                 </form>
               </li>
-              <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Proeevedores</a></li>
+              <li><a href="/moduloVentas/indexProveedores.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Proveedores</a></li>
+
             <?php
 
             }

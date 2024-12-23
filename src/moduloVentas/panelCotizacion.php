@@ -37,7 +37,7 @@ class panelCotizacion extends pantalla
                 <label for="nroCotizacion">Nro. Cotización:</label>
                 <input type="text" id="nroCotizacion" name="txtNroCotizacion">
               </div>
-              <input style="margin-top: 10px;" type="submit" name="btnBuscarNrcotaizacion" value="Buscar">
+              <input style="margin-top: 10px;" type="submit" name="btnBuscarNrcotizacion" value="Buscar">
             </form>
 
             <!-- Segundo filtro de Fecha, dos inputs de "desde" "hasta" -->

@@ -10,7 +10,7 @@ class controlReporteVentas
     {
         if (empty($desde) || empty($hasta)) {
             $this->mostrarError("Campos incompletos", "Debe completar las fechas 'Desde' y 'Hasta'.", "indexReporteventas.php");
-    exit(); // Detiene la ejecución
+            exit(); // Detiene la ejecución
         }
 
         $modelo = new EreporteVentas();
@@ -32,6 +32,17 @@ class controlReporteVentas
         if (empty($datosReporte)) {
             $this->mostrarError("Sin resultados", "No se encontraron reportes en el rango de fechas seleccionado.", "indexReporteventas.php");
             return;
+        }
+
+        // Calcular totales
+        $totalImporte = 0;
+        $totalCosto = 0;
+        $totalGanancia = 0;
+
+        foreach ($datosReporte as $reporte) {
+            $totalImporte += $reporte['ImporteTotal'];
+            $totalCosto += $reporte['CostoTotal'];
+            $totalGanancia += $reporte['Ganancia'];
         }
 
         $pdf = new TCPDF();
@@ -67,8 +78,28 @@ class controlReporteVentas
         }
         $html .= '</table>';
 
+        // Agregar resumen al final
+        $html .= '<h3>Resumen</h3>';
+        $html .= '<table border="1" cellspacing="0" cellpadding="5">
+                    <tr>
+                        <th>Importe Total</th>
+                        <th>Costo Total</th>
+                        <th>Ganancia</th>
+                    </tr>
+                    <tr>
+                        <td>' . number_format($totalImporte, 2) . '</td>
+                        <td>' . number_format($totalCosto, 2) . '</td>
+                        <td>' . number_format($totalGanancia, 2) . '</td>
+                    </tr>
+                  </table>';
+
         $pdf->writeHTML($html, true, false, true, false, '');
         $pdf->Output("Reporte_Ventas_{$desde}_{$hasta}.pdf", 'I');
+
+        // Solución al problema de reenvío del formulario
+        // Después de generar el PDF, redirigir al usuario
+        header("Location: indexReporteventas.php");
+        exit();
     }
 
     public function mostrarError($titulo, $mensaje, $link)
@@ -77,6 +108,4 @@ class controlReporteVentas
         $objMensaje->screenMensajeSistemaShow($titulo, $mensaje, "<a href='$link'>Volver al reporte</a>");
     }
 }
-
-    
 

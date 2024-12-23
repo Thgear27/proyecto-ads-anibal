@@ -22,7 +22,7 @@ class panelFactura extends pantalla
 
       <main style="padding: 0 2rem;">
         <h1 style="color: #00695c;">Facturas</h1>
-        
+
         <div class="filters-container">
           <a href="/moduloVentas/indexEmitirFactura.php" class="btn" style="margin-bottom: 1rem;">Emitir Factura</a>
           <div class="flex">
@@ -68,7 +68,7 @@ class panelFactura extends pantalla
 
                 <?php foreach ($facturas as $factura) : ?>
                   <tr>
-                    <td><?= $factura['SerieComprobanteID']; ?></td>
+                    <td><?= $factura['NumeroSerie']; ?></td>
                     <td><?= $factura['NumeroCorrelativo']; ?></td>
                     <td><?= $factura['Cliente']; ?></td>
                     <td><?= $factura['Obra']; ?></td>
