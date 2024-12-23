@@ -7,7 +7,7 @@ class pantalla
     <html>
 
     <head>
-      
+
       <!-- Import javasctipUrl -->
       <?php
       if ($javasctiptUrl != "") {
@@ -29,7 +29,7 @@ class pantalla
       <hr>
 
     <?php
-  } 
+  }
 
   protected function menuShow($rol)
   {
@@ -45,9 +45,7 @@ class pantalla
               <li><a href="/moduloSeguridad/indexPanelPrincipal.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Menú</a></li>
               <li><a href="/moduloVentas/indexFactura.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Factura</a></li>
               <li><a href="/moduloVentas/indexBoleta.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Emitir Boleta</a></li>
-              <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Compras</a></li>
-
-
+              <li><a href="/moduloVentas/indexGestionarCompras.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Compras</a></li>
             <?php
             }
             // Menú para "vendedor"
@@ -61,7 +59,6 @@ class pantalla
                 </form>
               </li>
               <li><a href="../moduloSeguridad/indexCambiarContrasena.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Proeevedores</a></li>
-
             <?php
 
             }
@@ -78,8 +75,9 @@ class pantalla
                 </form>
               </li>
               <li><a href="/moduloVentas/indexProveedores.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Proveedores</a></li>
-              <li><a href="../moduloVentas/indexReporteventas.php " style="color: white; text-decoration: none; display: block; padding: 8px;">Reporte Ventas</a></li>
+              <li><a href="/moduloVentas/indexReporteventas.php " style="color: white; text-decoration: none; display: block; padding: 8px;">Reporte Ventas</a></li>
               <li><a href="/moduloSeguridad/indexGestionarUsuarios.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Usuarios</a></li>
+              <li><a href="/moduloVentas/indexGestionarCompras.php" style="color: white; text-decoration: none; display: block; padding: 8px;">Compras</a></li>
             <?php
             }
 
