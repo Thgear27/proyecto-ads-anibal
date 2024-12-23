@@ -94,21 +94,34 @@ class Compras
     return $compras;
   }
 
-  // Agregar una compra
   public function agregarCompra($ruc, $tipo, $fecha, $concepto, $monto, $idProveedor)
   {
     $conexion = Conexion::conectarBD();
 
+    // Genera un número de serie y correlativo para la compra (de la forma F001, F002, etc.)
+    $sqlSerie = "SELECT COUNT(*) AS Cantidad FROM comprobanterecibido";
+    $respuesta = $conexion->query($sqlSerie);
+
+    if (!$respuesta) {
+      die("Error en la consulta: " . $conexion->error);
+    }
+
+    // Se genera el número de serie incrementando el valor actual de la cantidad
+    $serie = 'F' . str_pad($respuesta->fetch_assoc()['Cantidad'] + 1, 3, '0', STR_PAD_LEFT);
+
     // Insertar la compra en la tabla comprobanterecibido con estado 1 (activo)
-    $sql = "INSERT INTO comprobanterecibido (TipoComprobanteRecibido, FechaEmision, FechaVencimiento, TipoPago, FormaPago, Moneda, ProveedorID, ImporteTotal, Observaciones, Estado)
-            VALUES ('$tipo', '$fecha', '$fecha', 'Al contado', 'Efectivo', 'PEN', (SELECT ProveedorID FROM proveedor WHERE NumeroRUC = '$ruc'), '$monto', '$concepto', 1)";
+    $sql = "INSERT INTO comprobanterecibido (
+                NumeroSerieYCorrelativo, TipoComprobanteRecibido, FechaEmision, FechaVencimiento, 
+                TipoPago, FormaPago, Moneda, ImporteTotal, Observaciones, Estado, ProveedorID, 
+                `Op.Inafecta`, `Op.Exonerada`, `Op.Gratuita`, `Op.Gravada`, `TotalIGV`, DescuentoGlobal, Archivo
+            ) VALUES (
+                '$serie', '$tipo', '$fecha', '$fecha', 
+                'Al contado', 'Efectivo', 'PEN', '$monto', '$concepto', 1, '$idProveedor',
+                0, 0, 0, 0, 0, 0, 'default.pdf'
+            )";
 
     if ($conexion->query($sql) === TRUE) {
       $idCompra = $conexion->insert_id;  // Obtener el ID de la compra insertada
-      // Insertar detalles de la compra en la tabla compradetails (ajustar según el modelo real)
-      $sqlDetalle = "INSERT INTO compradetails (CompraID, Monto)
-                     VALUES ('$idCompra', '$monto')";
-      $conexion->query($sqlDetalle);
       Conexion::desConectarBD();
       return $idCompra;
     } else {
@@ -123,7 +136,7 @@ class Compras
 
     // Actualizar la compra en la tabla comprobanterecibido
     $sql = "UPDATE comprobanterecibido
-            SET TipoComprobanteRecibido = '$tipo', FechaEmision = '$fecha', FechaVencimiento = '$fecha', Observaciones = '$concepto', ImporteTotal = '$monto'
+            SET TipoComprobanteRecibido = '$tipo', FechaEmision = '$fecha', FechaVencimiento = '$fecha', Observaciones = '$concepto', ImporteTotal = '$monto', ProveedorID = '$idProveedor'
             WHERE ComprobanteRecibidoID = '$idCompra' AND Estado = 1";
 
     if ($conexion->query($sql) === TRUE) {
@@ -160,4 +173,3 @@ class Compras
     }
   }
 }
-?>

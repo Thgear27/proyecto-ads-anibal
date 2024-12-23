@@ -27,7 +27,7 @@ class panelReporteCompras extends pantalla
             <main style="padding: 0 2rem;">
                 <h1 style="color: #00695c;">Reporte de compras</h1>
 
-                <form method="post" action="../moduloVentas/reporteCompras/getCompras.php">
+                <form method="post" action="getCompras.php" name="frmReporteCompras">
                     <h3>Filtrar por fecha</h3>
                     <div class="fechas-filtro">
                         <div class="form-group">
@@ -59,8 +59,14 @@ class panelReporteCompras extends pantalla
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($compras !== null) : ?>
-                                <?php foreach ($compras as $compra) : ?>
+                            <?php if (!is_array($compras) || empty($compras)) : ?>
+                                <tr>
+                                    <td colspan="7">No se encontraron compras.</td>
+                                </tr>
+                            <?php else : ?>
+                                <?php
+                                $totalMonto = 0;
+                                foreach ($compras as $compra) : ?>
                                     <tr>
                                         <td><?= $compra['Proveedor']; ?></td>
                                         <td><?= $compra['NumeroRUC']; ?></td>
@@ -70,17 +76,16 @@ class panelReporteCompras extends pantalla
                                         <td><?= $compra['Observaciones']; ?></td>
                                         <td><?= $compra['ImporteTotal']; ?></td>
                                     </tr>
-                                <?php endforeach; ?>
-
-                            <?php else : ?>
-                                <tr>
-                                    <td colspan="7">No se encontraron compras.</td>
-                                </tr>
+                                <?php
+                                    $totalMonto += $compra['ImporteTotal'];
+                                endforeach; ?>
                             <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
-
+                <div>
+                    <p>Monto total: <?= $totalMonto; ?></p>
+                </div>
             </main>
         </div>
 <?php
