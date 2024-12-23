@@ -6,14 +6,15 @@ class Facturas
   public function getFacturas($numeroFactura = null, $fechadesde = null, $fechahasta = null)
   {
     $sql = "SELECT fe.FacturaEmitidaID,
-              fe.SerieComprobanteID,
-              fe.NumeroCorrelativo,
-              cl.NombreCompletoORazonSocial AS Cliente,
-              fe.Obra,
-              fe.FechaEmision,
-              fe.ImporteTotal
-            FROM facturaemitida fe
-            INNER JOIN cliente cl ON fe.ClienteID = cl.ClienteID";
+    sc.NumeroSerie,
+    LPAD(fe.NumeroCorrelativo, 10, '0') AS NumeroCorrelativo,
+    cl.NombreCompletoORazonSocial AS Cliente,
+    fe.Obra,
+    fe.FechaEmision,
+    fe.ImporteTotal
+  FROM facturaemitida fe
+  INNER JOIN cliente cl ON fe.ClienteID = cl.ClienteID
+  INNER JOIN seriecomprobante sc ON fe.SerieComprobanteID = sc.SerieComprobanteID";
 
     $conditions = [];
 

@@ -85,7 +85,7 @@ class formRegistrarProveedores extends pantalla
             }
         </style>
 
-        <a class="regresar-boton" href="/moduloSeguridad/indexPanelPrincipal.php">Regresar al panel principal</a>
+        <a class="regresar-boton" href="../moduloVentas/indexProveedores.php">Regresar al panel principal</a>
         <h1 style="margin-bottom: 20px;">Registrar Proveedor</h1>
         <form action="../moduloVentas/getProveedor.php" method="POST">
             <div>

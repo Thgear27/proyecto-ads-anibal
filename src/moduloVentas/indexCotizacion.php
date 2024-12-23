@@ -4,6 +4,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/modelo/cotizaciones.php');
 
 session_start();
 
+//validacion si esta autenticado
 if (!isset($_SESSION['autenticado'])) {
   header('Location: /');
   exit();

@@ -189,7 +189,7 @@ class controlEmitirCotizacion
 
     // Parámetros de ejemplo
     $usuarioID = 1;
-    $serieComprobanteID = 1;
+    $serieComprobanteID = 10;
 
     // Calcular totales
     $opGravada = 0;
@@ -233,9 +233,20 @@ class controlEmitirCotizacion
     );
 
     if ($numeroCorrelativo) {
-      return ['success' => true, 'message' => "Cotización guardada con el número: $numeroCorrelativo"];
+      $objMensaje = new screenMensajeSistema();
+      $objMensaje->screenMensajeSistemaShow(
+        "Mensaje",
+        "Cotizacion Guardada correctamente",
+        "<a href='../moduloVentas/indexCotizacion.php'>Regresar</a>"
+      );
+      exit();
     } else {
-      return ['success' => false, 'message' => 'Error al guardar la cotización.'];
+      $objMensaje = new screenMensajeSistema();
+      $objMensaje->screenMensajeSistemaShow(
+        "Error",
+        "Cotizacion No se guardo correctamente",
+        "<a href='../moduloVentas/indexEmitirCotizacion.php'>Regresar</a>"
+      );
     }
   }
 }
