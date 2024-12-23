@@ -59,14 +59,14 @@ class panelReporteCompras extends pantalla
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!is_array($compras) || empty($compras)) : ?>
+                            <?php
+                            $totalMonto = 0;
+                            if (!is_array($compras) || empty($compras)) : ?>
                                 <tr>
                                     <td colspan="7">No se encontraron compras.</td>
                                 </tr>
                             <?php else : ?>
-                                <?php
-                                $totalMonto = 0;
-                                foreach ($compras as $compra) : ?>
+                                <?php foreach ($compras as $compra) : ?>
                                     <tr>
                                         <td><?= $compra['Proveedor']; ?></td>
                                         <td><?= $compra['NumeroRUC']; ?></td>
